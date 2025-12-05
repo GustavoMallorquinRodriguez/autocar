@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Estoque - Estética Automotiva</title>
+    <link rel="stylesheet" href="cadastroestoq.css"/>
+</head>
+<body>
+    <header class="header">
+        <div class="diagonal-lines">
+            <div class="line line1"></div>
+            <div class="line line2"></div>
+            <div class="line line3"></div>
+            <div class="line line4"></div>
+            <div class="line line5"></div>
+            <div class="line line6"></div>
+        </div>
+        <a href="index.html" class="back-button">← Voltar</a>
+        <div class="header-content">
+            <h1>Cadastro de Estoque</h1>
+            <h2>Estética Automotiva</h2>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="form-card">
+            <h3>📦 Adicionar Novo Item ao Estoque</h3>
+            <form id="stockForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="productName">Nome do Produto *</label>
+                        <input type="text" id="productName" required placeholder="Ex: Flanela de Microfibra">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="category">Categoria *</label>
+                        <select id="category" required>
+                            <option value="">Selecione...</option>
+                            <option value="limpeza">Produtos de Limpeza</option>
+                            <option value="polimento">Polimento</option>
+                            <option value="vitrificacao">Vitrificação</option>
+                            <option value="higienizacao">Higienização</option>
+                            <option value="acessorios">Acessórios</option>
+                            <option value="ferramentas">Ferramentas</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="quantity">Quantidade *</label>
+                        <input type="number" id="quantity" required min="0" placeholder="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="unit">Unidade de Medida *</label>
+                        <select id="unit" required>
+                            <option value="">Selecione...</option>
+                            <option value="un">Unidade (un)</option>
+                            <option value="lt">Litros (lt)</option>
+                            <option value="ml">Mililitros (ml)</option>
+                            <option value="kg">Quilogramas (kg)</option>
+                            <option value="g">Gramas (g)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="minStock">Estoque Mínimo *</label>
+                        <input type="number" id="minStock" required min="0" placeholder="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="supplier">Fornecedor</label>
+                        <input type="text" id="supplier" placeholder="Nome do fornecedor">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="location">Localização</label>
+                        <input type="text" id="location" placeholder="Ex: Prateleira A3">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="price">Preço Unitário (R$)</label>
+                        <input type="number" id="price" step="0.01" min="0" placeholder="0.00">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="notes">Observações</label>
+                        <textarea id="notes" placeholder="Informações adicionais sobre o produto..."></textarea>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button type="submit" class="btn btn-primary">✅ Cadastrar Produto</button>
+                    <button type="reset" class="btn btn-secondary">🔄 Limpar Formulário</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="stock-table">
+            <h3>📋 Produtos Cadastrados</h3>
+            <table id="stockTable">
+                <thead>
+                    <tr>
+                        <th>Produto</th>
+                        <th>Categoria</th>
+                        <th>Quantidade</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="stockTableBody">
+                    <tr>
+                        <td>Flanela de Microfibra</td>
+                        <td>Acessórios</td>
+                        <td>15 un</td>
+                        <td><span class="status-badge status-low">Estoque Baixo</span></td>
+                        <td><button class="action-btn">Editar</button></td>
+                    </tr>
+                    <tr>
+                        <td>Shampoo Automotivo</td>
+                        <td>Limpeza</td>
+                        <td>8 lt</td>
+                        <td><span class="status-badge status-ok">OK</span></td>
+                        <td><button class="action-btn">Editar</button></td>
+                    </tr>
+                    <tr>
+                        <td>Vitrificador Cerâmico</td>
+                        <td>Vitrificação</td>
+                        <td>12 un</td>
+                        <td><span class="status-badge status-ok">OK</span></td>
+                        <td><button class="action-btn">Editar</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <scripts src="cadastroestoq.js"></script>
+
+</body>
+</html>
