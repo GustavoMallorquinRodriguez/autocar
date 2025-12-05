@@ -1,0 +1,213 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: #f5f5f5;
+}
+
+.header {
+    background: linear-gradient(135deg, #00b170 0%, #00965a 100%);
+    color: white;
+    padding: 60px 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.header::before,
+.header::after {
+    content: '';
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.1);
+    transform: rotate(45deg);
+}
+
+.header::before {
+    top: -100px;
+    left: -50px;
+    border-left: 4px solid white;
+    border-right: 4px solid white;
+    border-top: 4px solid white;
+    border-bottom: 4px solid white;
+}
+
+.header::after {
+    bottom: -100px;
+    right: -50px;
+    border-left: 4px solid white;
+    border-right: 4px solid white;
+    border-top: 4px solid white;
+    border-bottom: 4px solid white;
+}
+
+.diagonal-lines {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.line {
+    position: absolute;
+    background: white;
+    transform: rotate(45deg);
+    opacity: 0.3;
+}
+
+.line1 { width: 8px; height: 300%; top: -50%; left: 5%; }
+.line2 { width: 8px; height: 300%; top: -50%; left: 8%; }
+.line3 { width: 8px; height: 300%; top: -50%; left: 11%; }
+.line4 { width: 8px; height: 300%; top: -50%; right: 5%; }
+.line5 { width: 8px; height: 300%; top: -50%; right: 8%; }
+.line6 { width: 8px; height: 300%; top: -50%; right: 11%; }
+
+.header-content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+}
+
+.header h1 {
+    font-size: 2.5em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.header h2 {
+    font-size: 1.8em;
+    font-weight: normal;
+    letter-spacing: 3px;
+}
+
+.user-name {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    text-align: right;
+    z-index: 11;
+}
+
+.user-name p {
+    font-size: 1em;
+    margin-bottom: 5px;
+}
+
+.user-name h3 {
+    font-size: 1.4em;
+    font-weight: bold;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 40px auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+}
+
+.card {
+    background: linear-gradient(135deg, #00d084 0%, #00b86f 100%);
+    border-radius: 15px;
+    padding: 40px;
+    color: white;
+    box-shadow: 0 10px 30px rgba(0, 208, 132, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 208, 132, 0.4);
+}
+
+.card h3 {
+    font-size: 1.3em;
+    margin-bottom: 25px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.card ul {
+    list-style: none;
+}
+
+.card li {
+    margin-bottom: 15px;
+    padding-left: 25px;
+    position: relative;
+    line-height: 1.6;
+}
+
+.card li::before {
+    content: '📋';
+    position: absolute;
+    left: 0;
+}
+
+.card li.emoji-check::before {
+    content: '👉';
+}
+
+.card li.emoji-box::before {
+    content: '📦';
+}
+
+.card li.emoji-tools::before {
+    content: '👉';
+}
+
+.card li.emoji-user::before {
+    content: '👤';
+}
+
+.card li.emoji-ok::before {
+    content: '✅';
+}
+
+.card button {
+    background: white;
+    color: #00d084;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.card button:hover {
+    background: #f0f0f0;
+    transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 1.8em;
+    }
+
+    .header h2 {
+        font-size: 1.3em;
+    }
+
+    .user-name {
+        position: static;
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .container {
+        grid-template-columns: 1fr;
+    }
+}
