@@ -313,6 +313,15 @@
             box-shadow: 0 5px 15px rgba(0, 208, 132, 0.4);
         }
 
+        .delete-btn {
+            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+            margin-left: 5px;
+        }
+
+        .delete-btn:hover {
+            box-shadow: 0 5px 15px rgba(244, 67, 54, 0.4);
+        }
+
         @media (max-width: 768px) {
             .form-grid {
                 grid-template-columns: 1fr;

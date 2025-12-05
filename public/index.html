@@ -1,110 +1,96 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema Interno - Estética Automotiva</title>
-    
-</head>
-<body>
-    <header class="header">
-        <div class="diagonal-lines">
-            <div class="line line1"></div>
-            <div class="line line2"></div>
-            <div class="line line3"></div>
-            <div class="line line4"></div>
-            <div class="line line5"></div>
-            <div class="line line6"></div>
-        </div>
-        <div class="header-content">
-            <h1>Estética Automotiva</h1>
-            <h2>Bem-vindo ao Sistema Interno</h2>
-        </div>
-        <div class="user-name">
-            <p>Nome do</p>
-            <h3>Funcionário</h3>
-        </div>
-    </header>
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="stylesheet" href="style.css" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Sistema Interno - Estética Automotiva</title>
+    </head>
+    <body>
+        <header class="header">
+            <div class="diagonal-lines">
+                <div class="line line1"></div>
+                <div class="line line2"></div>
+                <div class="line line3"></div>
+                <div class="line line4"></div>
+                <div class="line line5"></div>
+                <div class="line line6"></div>
+            </div>
+            <div class="header-content">
+                <h1>Estética Automotiva</h1>
+                <h2>Bem-vindo ao Sistema Interno</h2>
+            </div>
+            <div class="user-name">
+                <p>Nome do</p>
+                <h3>Funcionário</h3>
+            </div>
+        </header>
 
+        <div class="container">
+            <div class="card">
+                <h3>📋 Resumo do Dia</h3>
+                <ul>
+                    <li>Serviços Agendados: 7</li>
+                    <li>Ordens de Serviço em Andamento: 3</li>
+                    <li>Pendências: 2</li>
+                    <li>Mensagens Internas: 1</li>
+                </ul>
+                <a href="tarefasatri.html" class="btn-link">Ver Agenda Completa</a>
+            </div>
 
-    <div class="container">
-        <div class="card">
-            <h3>📋 Resumo do Dia</h3>
-            <ul>
-                <li>Serviços Agendados: 7</li>
-                <li>Ordens de Serviço em Andamento: 3</li>
-                <li>Pendências: 2</li>
-                <li>Mensagens Internas: 1</li>
-            </ul>
-            <button onclick="alert('Visualizando agenda completa...')"> Ver Agenda Completa</button>
-        </div>
+            <div class="card">
+                <h3>📋 Tarefas Atribuídas</h3>
+                <ul>
+                    <li class="emoji-tools">Polimento Técnico - 10H</li>
+                    <li class="emoji-tools">Higienização Interna - 14H</li>
+                    <li class="emoji-tools">Vitrificação - 16H</li>
+                </ul>
+                <a href="tarefasatri.html" class="btn-link">Ver Detalhes da Tarefa</a>
+            </div>
 
-        <div class="card">
-            <h3>📋 Tarefas Atribuídas</h3>
-            <ul>
-                <li class="emoji-tools">Polimento Técnico - 10H</li>
-                <li class="emoji-tools">Higienização Interna - 14H</li>
-                <li class="emoji-tools">Vitrificação - 16H</li>
-            </ul>
-            <button onclick="alert('Visualizando detalhes da tarefa...')"> Ver Detalhes da Tarefa</button>
-        </div>
+            <div class="card">
+                <h3>📦 Estoque e Materiais</h3>
+                <ul>
+                    <li class="emoji-box">Flanela de Microfibra - Estoque Baixo</li>
+                    <li class="emoji-box">Shampoo Automotivo - OK</li>
+                    <li class="emoji-box">Vitrificador Cerâmico - OK</li>
+                </ul>
+                <a href="cadastroestoq.html" class="btn-link">Gerenciar Estoque</a>
+            </div>
 
-        <div class="card">
-            <h3>📦  Estoque e Materiais</h3>
-            <ul>
-                <li class="emoji-box">Flanela de Microfibra - Estoque Baixo</li>
-                <li class="emoji-box">Shampoo Automotivo - OK</li>
-                <li class="emoji-box">Vitrificador Cerâmico - OK</li>
-            </ul>
-            <button onclick="alert('Solicitando reposição...')"> Solicitar Reposição</button>
-        </div>
+            <div class="card">
+                <h3>📋 Ordens de Serviço</h3>
+                <ul>
+                    <li>OS #1021 - Corolla 2020</li>
+                    <li>Status: Higienização Interna - 40%</li>
+                    <li>OS #1022 - HR-V 2019</li>
+                    <li>Status: Polimento Técnico - 60%</li>
+                </ul>
+                <a href="os.html" class="btn-link">Ver Todas as OS</a>
+            </div>
 
-        <div class="card">
-            <h3>📋 Ordens de Serviço em Andamento</h3>
-            <ul>
-                <li>OS #1021 - Corolla 2020</li>
-                <li>Status: Higienização Interna - 40%</li>
-                <li>OS #1022 - HR-V 2019</li>
-                <li>Status: Polimento Técnico - 60%</li>
-            </ul>
-            <button onclick="alert('Visualizando todas as OS...')"> Ver Todas as OS</button>
-        </div>
+            <div class="card">
+                <h3>👤 Funcionários</h3>
+                <ul>
+                    <li class="emoji-user">Cadastrar Funcionário</li>
+                    <li class="emoji-user">Visualizar Funcionários</li>
+                    <li class="emoji-user">Metas do Mês</li>
+                    <li class="emoji-user">Gerenciar Equipe</li>
+                </ul>
+                <a href="funcionario.html" class="btn-link">Cadastrar Funcionário</a>
+                <a href="visualfunc.html" class="btn-link btn-secondary">Ver Funcionários</a>
+            </div>
 
-        <div class="card">
-            <h3>👤 Perfil do Funcionário</h3>
-            <ul>
-                <li class="emoji-user">Consultar Ponto</li>
-                <li class="emoji-user">Ver Comissões</li>
-                <li class="emoji-user">Metas do Mês</li>
-                <li class="emoji-user">Atualizar Dados de Login</li>
-            </ul>
-            <button onclick="alert('Acessando perfil...')">Ver Perfil Completo</button>
+            <div class="card">
+                <h3>📊 Relatórios</h3>
+                <ul>
+                    <li class="emoji-chart">Relatório Diário</li>
+                    <li class="emoji-chart">Relatório Semanal</li>
+                    <li class="emoji-chart">Relatório Mensal</li>
+                    <li class="emoji-chart">Desempenho da Equipe</li>
+                </ul>
+                <a href="relatorio.html" class="btn-link">Ver Relatórios</a>
+            </div>
         </div>
-
-        <div class="card">
-            <h3>👥 Cadastrar Cliente</h3>
-            <ul>
-                <li class="emoji-person">Nome Completo</li>
-                <li class="emoji-person">CPF/CNPJ</li>
-                <li class="emoji-person">Telefone e E-mail</li>
-                <li class="emoji-person">Endereço</li>
-            </ul>
-            <button onclick="alert('Abrindo formulário de cadastro de cliente...')">Novo Cliente</button>
-        </div>
-
-        <div class="card">
-            <h3>🚗 Cadastrar Veículo</h3>
-            <ul>
-                <li class="emoji-car">Placa do Veículo</li>
-                <li class="emoji-car">Modelo e Marca</li>
-                <li class="emoji-car">Ano e Cor</li>
-                <li class="emoji-car">Vincular ao Cliente</li>
-            </ul>
-            <button onclick="alert('Abrindo formulário de cadastro de veículo...')">Novo Veículo</button>
-        </div>
-    
-    </div>
-    
-</body>
+    </body>
 </html>

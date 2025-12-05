@@ -1,3 +1,41 @@
+function loadEmployees() {
+    const saved = localStorage.getItem('employeesData');
+    if (saved) {
+        return JSON.parse(saved);
+    }
+    return [];
+}
+
+function saveEmployees(data) {
+    localStorage.setItem('employeesData', JSON.stringify(data));
+}
+
+let employeesData = loadEmployees();
+
+function renderEmployeesTable() {
+    const tbody = document.getElementById('employeesTableBody');
+    if (!tbody) return;
+    
+    if (employeesData.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px; color: #666;">Nenhum funcionário cadastrado</td></tr>';
+        return;
+    }
+    
+    tbody.innerHTML = employeesData.map((emp, index) => `
+        <tr>
+            <td>${emp.matricula}</td>
+            <td>${emp.nome}</td>
+            <td>${emp.cargo}</td>
+            <td>${emp.departamento}</td>
+            <td>${emp.turno}</td>
+            <td>
+                <button class="action-btn" onclick="viewEmployee(${index})">Ver</button>
+                <button class="action-btn delete-btn" onclick="deleteEmployee(${index})">Excluir</button>
+            </td>
+        </tr>
+    `).join('');
+}
+
 function cadastrarFuncionario() {
     const nome = document.getElementById('nome').value;
     const cpf = document.getElementById('cpf').value;
@@ -19,6 +57,18 @@ function cadastrarFuncionario() {
 
     if (senha.length < 6) {
         alert('A senha deve ter no mínimo 6 caracteres');
+        return;
+    }
+
+    const matriculaExists = employeesData.some(emp => emp.matricula === matricula);
+    if (matriculaExists) {
+        alert('Já existe um funcionário com esta matrícula!');
+        return;
+    }
+
+    const cpfExists = employeesData.some(emp => emp.cpf === cpf);
+    if (cpfExists) {
+        alert('Já existe um funcionário com este CPF!');
         return;
     }
 
@@ -65,7 +115,9 @@ function cadastrarFuncionario() {
         dataCadastro: new Date().toISOString()
     };
 
-    console.log('Funcionário cadastrado:', funcionario);
+    employeesData.push(funcionario);
+    saveEmployees(employeesData);
+    renderEmployeesTable();
 
     document.getElementById('mensagemSucesso').classList.add('show');
     document.getElementById('formulario').style.display = 'none';
@@ -75,6 +127,54 @@ function cadastrarFuncionario() {
         document.getElementById('mensagemSucesso').classList.remove('show');
         document.getElementById('formulario').style.display = 'grid';
     }, 3000);
+}
+
+function viewEmployee(index) {
+    const emp = employeesData[index];
+    const info = `
+DADOS DO FUNCIONÁRIO
+
+Nome: ${emp.nome}
+CPF: ${emp.cpf}
+RG: ${emp.rg || 'Não informado'}
+Data de Nascimento: ${emp.dataNascimento}
+Telefone: ${emp.telefone}
+E-mail: ${emp.email || 'Não informado'}
+Endereço: ${emp.endereco || 'Não informado'}
+
+INFORMAÇÕES PROFISSIONAIS
+Matrícula: ${emp.matricula}
+Cargo: ${emp.cargo}
+Departamento: ${emp.departamento}
+Data de Admissão: ${emp.dataAdmissao}
+Supervisor: ${emp.supervisor || 'Não informado'}
+Turno: ${emp.turno}
+Especializações: ${emp.especializacoes.length > 0 ? emp.especializacoes.join(', ') : 'Nenhuma'}
+
+REMUNERAÇÃO
+Salário: R$ ${emp.salario || '0,00'}
+Comissão: ${emp.comissao || '0'}%
+Meta de Serviços: ${emp.metaServicos || 'Não definida'}
+Meta de Faturamento: R$ ${emp.metaFaturamento || 'Não definida'}
+
+ACESSO AO SISTEMA
+Usuário: ${emp.usuario}
+Nível de Acesso: ${emp.nivelAcesso}
+Permissões: ${emp.permissoes.length > 0 ? emp.permissoes.join(', ') : 'Nenhuma'}
+
+Observações: ${emp.observacoes || 'Nenhuma'}
+    `;
+    alert(info);
+}
+
+function deleteEmployee(index) {
+    const emp = employeesData[index];
+    if (confirm(`Deseja realmente excluir o funcionário "${emp.nome}"?`)) {
+        employeesData.splice(index, 1);
+        saveEmployees(employeesData);
+        renderEmployeesTable();
+        alert('✅ Funcionário excluído com sucesso!');
+    }
 }
 
 function limparFormulario() {
@@ -102,3 +202,5 @@ document.getElementById('telefone').addEventListener('input', function(e) {
         e.target.value = value;
     }
 });
+
+renderEmployeesTable();
