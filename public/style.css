@@ -115,7 +115,7 @@ body {
 }
 
 .card {
-    background: linear-gradient(135deg, #00d084 0%, #00b86f 100%);
+    background: linear-gradient(135deg, #808080 0%, #696969 100%);
     border-radius: 15px;
     padding: 40px;
     color: white;
@@ -153,29 +153,18 @@ body {
     left: 0;
 }
 
-.card li.emoji-check::before {
-    content: '👉';
-}
-
 .card li.emoji-box::before {
     content: '📦';
-}
-
-.card li.emoji-tools::before {
-    content: '👉';
 }
 
 .card li.emoji-user::before {
     content: '👤';
 }
 
-.card li.emoji-ok::before {
-    content: '✅';
-}
 
 .card button {
     background: white;
-    color: #00d084;
+    color: #4F4F4F;
     border: none;
     padding: 12px 30px;
     border-radius: 25px;
