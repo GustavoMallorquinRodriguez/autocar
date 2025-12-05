@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="cadastrocli.css" />
+    <script src="cadastrocli.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Cliente - Estética Automotiva</title>
+
+</head>
+<body>
+    <header class="header">
+        <div class="diagonal-lines">
+            <div class="line line1"></div>
+            <div class="line line2"></div>
+            <div class="line line3"></div>
+            <div class="line line4"></div>
+            <div class="line line5"></div>
+            <div class="line line6"></div>
+        </div>
+        <a href="#" class="back-button" onclick="voltarPagina()">← Voltar</a>
+        <div class="header-content">
+            <h1>Estética Automotiva</h1>
+            <h2>Cadastro de Cliente</h2>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="form-card">
+            <div id="successMessage" class="success-message">
+                ✓ Cliente cadastrado com sucesso!
+            </div>
+
+            <h3>👥 Novo Cliente</h3>
+
+            <form id="clientForm" onsubmit="cadastrarCliente(event)">
+                <!-- Dados Pessoais -->
+                <div class="form-section">
+                    <h4>Dados Pessoais</h4>
+                    
+                    <div class="form-group">
+                        <label>Tipo de Pessoa *</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="pessoaFisica" name="tipoPessoa" value="fisica" checked onchange="mudarTipoPessoa()">
+                                <label for="pessoaFisica">Pessoa Física</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="pessoaJuridica" name="tipoPessoa" value="juridica" onchange="mudarTipoPessoa()">
+                                <label for="pessoaJuridica">Pessoa Jurídica</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nome" id="labelNome">Nome Completo *</label>
+                            <input type="text" id="nome" required placeholder="Digite o nome completo">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="documento" id="labelDocumento">CPF *</label>
+                            <input type="text" id="documento" required placeholder="000.000.000-00">
+                        </div>
+                        <div class="form-group" id="rgGroup">
+                            <label for="rg">RG</label>
+                            <input type="text" id="rg" placeholder="00.000.000-0">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="dataNascimento" id="labelData">Data de Nascimento</label>
+                            <input type="date" id="dataNascimento">
+                        </div>
+                        <div class="form-group">
+                            <label for="sexo">Sexo</label>
+                            <select id="sexo">
+                                <option value="">Selecione</option>
+                                <option value="masculino">Masculino</option>
+                                <option value="feminino">Feminino</option>
+                                <option value="outro">Outro</option>
+                                <option value="nao-informar">Prefiro não informar</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contato -->
+                <div class="form-section">
+                    <h4>Contato</h4>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="telefone">Telefone/Celular *</label>
+                            <input type="tel" id="telefone" required placeholder="(00) 00000-0000">
+                        </div>
+                        <div class="form-group">
+                            <label for="telefone2">Telefone Alternativo</label>
+                            <input type="tel" id="telefone2" placeholder="(00) 00000-0000">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">E-mail *</label>
+                            <input type="email" id="email" required placeholder="cliente@email.com">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Endereço -->
+                <div class="form-section">
+                    <h4>Endereço</h4>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="cep">CEP</label>
+                            <input type="text" id="cep" placeholder="00000-000" onblur="buscarCep()">
+                        </div>
+                        <div class="form-group">
+                            <label for="logradouro">Logradouro</label>
+                            <input type="text" id="logradouro" placeholder="Rua, Avenida, etc.">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="numero">Número</label>
+                            <input type="text" id="numero" placeholder="123">
+                        </div>
+                        <div class="form-group">
+                            <label for="complemento">Complemento</label>
+                            <input type="text" id="complemento" placeholder="Apto, Bloco, etc.">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bairro">Bairro</label>
+                            <input type="text" id="bairro" placeholder="Nome do bairro">
+                        </div>
+                        <div class="form-group">
+                            <label for="cidade">Cidade</label>
+                            <input type="text" id="cidade" placeholder="Nome da cidade">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="estado">Estado</label>
+                            <select id="estado">
+                                <option value="">Selecione</option>
+                                <option value="AC">Acre</option>
+                                <option value="AL">Alagoas</option>
+                                <option value="AP">Amapá</option>
+                                <option value="AM">Amazonas</option>
+                                <option value="BA">Bahia</option>
+                                <option value="CE">Ceará</option>
+                                <option value="DF">Distrito Federal</option>
+                                <option value="ES">Espírito Santo</option>
+                                <option value="GO">Goiás</option>
+                                <option value="MA">Maranhão</option>
+                                <option value="MT">Mato Grosso</option>
+                                <option value="MS">Mato Grosso do Sul</option>
+                                <option value="MG">Minas Gerais</option>
+                                <option value="PA">Pará</option>
+                                <option value="PB">Paraíba</option>
+                                <option value="PR">Paraná</option>
+                                <option value="PE">Pernambuco</option>
+                                <option value="PI">Piauí</option>
+                                <option value="RJ">Rio de Janeiro</option>
+                                <option value="RN">Rio Grande do Norte</option>
+                                <option value="RS">Rio Grande do Sul</option>
+                                <option value="RO">Rondônia</option>
+                                <option value="RR">Roraima</option>
+                                <option value="SC">Santa Catarina</option>
+                                <option value="SP">São Paulo</option>
+                                <option value="SE">Sergipe</option>
+                                <option value="TO">Tocantins</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Observações -->
+                <div class="form-section">
+                    <h4>Informações Adicionais</h4>
+                    
+                    <div class="form-group">
+                        <label for="observacoes">Observações</label>
+                        <textarea id="observacoes" placeholder="Informações adicionais sobre o cliente..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Botões -->
+                <div class="button-group">
+                    <button type="button" class="btn btn-secondary" onclick="limparFormulario()">Limpar</button>
+                    <button type="submit" class="btn btn-primary">Cadastrar Cliente</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>
