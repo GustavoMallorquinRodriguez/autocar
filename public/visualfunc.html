@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="visualfunc.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil do Funcionário - Estética Automotiva</title>
+    
+</head>
+<body>
+    <header class="header">
+        <div class="diagonal-lines">
+            <div class="line line1"></div>
+            <div class="line line2"></div>
+            <div class="line line3"></div>
+            <div class="line line4"></div>
+            <div class="line line5"></div>
+            <div class="line line6"></div>
+        </div>
+        <div class="header-content">
+            <a href="index.html" class="back-button">← Voltar</a>
+            <div class="header-title">
+                <h1>Perfil do Funcionário</h1>
+            </div>
+            <div style="width: 100px;"></div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="profile-header">
+            <div class="profile-photo">👤</div>
+            <div class="profile-info">
+                <h2>Carlos Eduardo Silva</h2>
+                <div class="role">Especialista em Polimento e Vitrificação</div>
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <div class="number">3</div>
+                        <div class="label">Anos na Empresa</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="number">248</div>
+                        <div class="label">Serviços Realizados</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="number">4.9</div>
+                        <div class="label">Avaliação Média</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="number">98%</div>
+                        <div class="label">Taxa de Presença</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-grid">
+            <div class="card">
+                <h3>📋 Dados Pessoais</h3>
+                <div class="info-item">
+                    <span class="info-label">Nome Completo:</span>
+                    <span class="info-value">Carlos Eduardo Silva</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">CPF:</span>
+                    <span class="info-value">123.456.789-00</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Data de Nascimento:</span>
+                    <span class="info-value">15/03/1990</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Telefone:</span>
+                    <span class="info-value">(41) 99999-8888</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">E-mail:</span>
+                    <span class="info-value">carlos.silva@email.com</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Endereço:</span>
+                    <span class="info-value">Rua das Flores, 123 - Curitiba/PR</span>
+                </div>
+                <button onclick="alert('Editando dados pessoais...')">Atualizar Dados</button>
+            </div>
+
+            <div class="card">
+                <h3>💼 Informações Profissionais</h3>
+                <div class="info-item">
+                    <span class="info-label">Matrícula:</span>
+                    <span class="info-value">#EMP-2021-045</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Cargo:</span>
+                    <span class="info-value">Especialista Técnico</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Departamento:</span>
+                    <span class="info-value">Serviços Especializados</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Data de Admissão:</span>
+                    <span class="info-value">10/01/2021</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Supervisor:</span>
+                    <span class="info-value">João Santos</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Turno:</span>
+                    <span class="info-value">Manhã e Tarde (08:00-18:00)</span>
+                </div>
+                <button onclick="alert('Visualizando contrato...')">Ver Contrato</button>
+            </div>
+
+            <div class="card">
+                <h3>⏰ Registro de Ponto</h3>
+                <div class="time-record">
+                    <div class="date">Segunda, 02/12/2024</div>
+                    <div class="times">
+                        <span>Entrada: 08:02</span>
+                        <span>Saída Almoço: 12:00</span>
+                        <span>Retorno: 13:00</span>
+                        <span>Saída: 18:05</span>
+                    </div>
+                </div>
+                <div class="time-record">
+                    <div class="date">Terça, 03/12/2024</div>
+                    <div class="times">
+                        <span>Entrada: 07:58</span>
+                        <span>Saída Almoço: 12:00</span>
+                        <span>Retorno: 13:00</span>
+                        <span>Saída: 18:00</span>
+                    </div>
+                </div>
+                <div class="time-record">
+                    <div class="date">Quarta, 04/12/2024</div>
+                    <div class="times">
+                        <span>Entrada: 08:00</span>
+                        <span>Saída Almoço: 12:00</span>
+                        <span>Retorno: 13:00</span>
+                        <span>Saída: 18:02</span>
+                    </div>
+                </div>
+                <button onclick="alert('Visualizando histórico completo...')">Ver Histórico Completo</button>
+            </div>
+
+            <div class="card">
+                <h3>💰 Comissões do Mês</h3>
+                <div class="commission-item">
+                    <div class="service">Polimento Técnico Completo</div>
+                    <div class="details">
+                        <span>Cliente: João Pereira</span>
+                        <span>R$ 180,00</span>
+                    </div>
+                </div>
+                <div class="commission-item">
+                    <div class="service">Vitrificação Cerâmica</div>
+                    <div class="details">
+                        <span>Cliente: Maria Santos</span>
+                        <span>R$ 250,00</span>
+                    </div>
+                </div>
+                <div class="commission-item">
+                    <div class="service">Polimento + Vitrificação</div>
+                    <div class="details">
+                        <span>Cliente: Pedro Oliveira</span>
+                        <span>R$ 320,00</span>
+                    </div>
+                </div>
+                <div class="commission-item">
+                    <div class="service">Tratamento de Pintura</div>
+                    <div class="details">
+                        <span>Cliente: Ana Costa</span>
+                        <span>R$ 150,00</span>
+                    </div>
+                </div>
+                <div class="commission-total">
+                    <div>Total do Mês</div>
+                    <div class="amount">R$ 900,00</div>
+                </div>
+                <button onclick="alert('Visualizando detalhes das comissões...')">Ver Detalhes</button>
+            </div>
+
+            <div class="card">
+                <h3>🎯 Metas do Mês</h3>
+                <div class="goal-item">
+                    <div class="goal-header">
+                        <span>Serviços Realizados</span>
+                        <span>18 / 25</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 72%">72%</div>
+                    </div>
+                </div>
+                <div class="goal-item">
+                    <div class="goal-header">
+                        <span>Faturamento</span>
+                        <span>R$ 8.500 / R$ 12.000</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 71%">71%</div>
+                    </div>
+                </div>
+                <div class="goal-item">
+                    <div class="goal-header">
+                        <span>Satisfação do Cliente</span>
+                        <span>4.9 / 5.0</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 98%">98%</div>
+                    </div>
+                </div>
+                <button onclick="alert('Visualizando histórico de metas...')">Ver Histórico de Metas</button>
+            </div>
+
+            <div class="card">
+                <h3>📄 Documentos</h3>
+                <ul class="documents-list">
+                    <li>
+                        <span>Contrato de Trabalho</span>
+                        <a href="#" class="doc-link" onclick="alert('Baixando documento...'); return false;">Baixar</a>
+                    </li>
+                    <li>
+                        <span>Holerite Novembro/2024</span>
+                        <a href="#" class="doc-link" onclick="alert('Baixando documento...'); return false;">Baixar</a>
+                    </li>
+                    <li>
+                        <span>Informe de Rendimentos 2024</span>
+                        <a href="#" class="doc-link" onclick="alert('Baixando documento...'); return false;">Baixar</a>
+                    </li>
+                    <li>
+                        <span>Certificado - Polimento Técnico</span>
+                        <a href="#" class="doc-link" onclick="alert('Baixando documento...'); return false;">Baixar</a>
+                    </li>
+                    <li>
+                        <span>Certificado - Vitrificação</span>
+                        <a href="#" class="doc-link" onclick="alert('Baixando documento...'); return false;">Baixar</a>
+                    </li>
+                </ul>
+                <button onclick="alert('Visualizando todos os documentos...')">Ver Todos os Documentos</button>
+            </div>
+
+            <div class="card">
+                <h3>🔐 Segurança e Acesso</h3>
+                <div class="info-item">
+                    <span class="info-label">Usuário:</span>
+                    <span class="info-value">carlos.silva</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Último Acesso:</span>
+                    <span class="info-value">05/12/2024 às 08:02</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Senha:</span>
+                    <span class="info-value">••••••••</span>
+                </div>
+                <button onclick="alert('Alterando senha...')">Alterar Senha</button>
+            </div>
+
+            <div class="card">
+                <h3>⭐ Avaliações Recentes</h3>
+                <div class="commission-item">
+                    <div class="service">⭐⭐⭐⭐⭐ (5.0)</div>
+                    <div class="details">
+                        <span>"Excelente trabalho! Carro ficou impecável."</span>
+                    </div>
+                </div>
+                <div class="commission-item">
+                    <div class="service">⭐⭐⭐⭐⭐ (5.0)</div>
+                    <div class="details">
+                        <span>"Profissional muito atencioso e caprichoso."</span>
+                    </div>
+                </div>
+                <div class="commission-item">
+                    <div class="service">⭐⭐⭐⭐☆ (4.0)</div>
+                    <div class="details">
+                        <span>"Bom serviço, mas demorou um pouco mais."</span>
+                    </div>
+                </div>
+                <button onclick="alert('Visualizando todas as avaliações...')">Ver Todas as Avaliações</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

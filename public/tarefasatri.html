@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="tarefasatri.css" />
+    <script src="tarefasatri.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Tarefas - Estética Automotiva</title>
+</head>
+<body>
+    <header class="header">
+        <div class="diagonal-lines">
+            <div class="line line1"></div>
+            <div class="line line2"></div>
+            <div class="line line3"></div>
+            <div class="line line4"></div>
+            <div class="line line5"></div>
+            <div class="line line6"></div>
+        </div>
+        <a href="#" class="back-button" onclick="window.history.back(); return false;">← Voltar</a>
+        <div class="header-content">
+            <h1>Estética Automotiva</h1>
+            <h2>Cadastro de Tarefas Atribuídas</h2>
+        </div>
+    </header>
+
+    <div class="container">
+        <div id="mensagemSucesso" class="success-message card">
+            ✓ Tarefa cadastrada e atribuída com sucesso!
+        </div>
+
+        <div class="card">
+            <h3>🎯 Informações da Tarefa</h3>
+            
+            <div class="form-group">
+                <label for="tituloTarefa">Título da Tarefa *</label>
+                <input type="text" id="tituloTarefa" required placeholder="Ex: Polimento Técnico Completo">
+            </div>
+
+            <div class="form-group">
+                <label for="tipoServico">Tipo de Serviço *</label>
+                <select id="tipoServico" required>
+                    <option value="">Selecione o tipo de serviço</option>
+                    <option value="Polimento Técnico">Polimento Técnico</option>
+                    <option value="Polimento Comercial">Polimento Comercial</option>
+                    <option value="Vitrificação Cerâmica">Vitrificação Cerâmica</option>
+                    <option value="Cristalização de Vidros">Cristalização de Vidros</option>
+                    <option value="Higienização Interna">Higienização Interna</option>
+                    <option value="Higienização de Banco">Higienização de Banco</option>
+                    <option value="Lavagem Completa">Lavagem Completa</option>
+                    <option value="Lavagem Expressa">Lavagem Expressa</option>
+                    <option value="Tratamento de Pintura">Tratamento de Pintura</option>
+                    <option value="Revitalização de Plásticos">Revitalização de Plásticos</option>
+                    <option value="Outro">Outro</option>
+                </select>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="prioridade">Prioridade *</label>
+                    <select id="prioridade" required>
+                        <option value="">Selecione a prioridade</option>
+                        <option value="baixa">🟢 Baixa</option>
+                        <option value="media">🟡 Média</option>
+                        <option value="alta">🔴 Alta</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="tempoEstimado">Tempo Estimado (horas) *</label>
+                    <input type="number" id="tempoEstimado" required placeholder="Ex: 3" step="0.5" min="0.5">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="descricao">Descrição Detalhada *</label>
+                <textarea id="descricao" required placeholder="Descreva os detalhes do serviço a ser realizado..."></textarea>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>👤 Atribuição</h3>
+            
+            <div class="form-group">
+                <label for="funcionario">Funcionário Responsável *</label>
+                <select id="funcionario" required>
+                    <option value="">Selecione o funcionário</option>
+                    <option value="Carlos Eduardo Silva">Carlos Eduardo Silva</option>
+                    <option value="João Santos">João Santos</option>
+                    <option value="Maria Oliveira">Maria Oliveira</option>
+                    <option value="Pedro Costa">Pedro Costa</option>
+                    <option value="Ana Paula">Ana Paula</option>
+                    <option value="Ricardo Alves">Ricardo Alves</option>
+                </select>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="dataAgendamento">Data de Agendamento *</label>
+                    <input type="date" id="dataAgendamento" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="horario">Horário *</label>
+                    <input type="time" id="horario" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="supervisor">Supervisor</label>
+                <select id="supervisor">
+                    <option value="">Selecione o supervisor</option>
+                    <option value="João Santos">João Santos</option>
+                    <option value="Maria Oliveira">Maria Oliveira</option>
+                    <option value="Ricardo Alves">Ricardo Alves</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Equipe Adicional</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="equipe1" value="Carlos Eduardo Silva">
+                        <label for="equipe1">Carlos Eduardo</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="equipe2" value="Pedro Costa">
+                        <label for="equipe2">Pedro Costa</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="equipe3" value="Ana Paula">
+                        <label for="equipe3">Ana Paula</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>🚗 Dados do Veículo</h3>
+            
+            <div class="form-group">
+                <label for="cliente">Cliente *</label>
+                <input type="text" id="cliente" required placeholder="Nome do cliente">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="veiculo">Veículo *</label>
+                    <input type="text" id="veiculo" required placeholder="Ex: Corolla 2020">
+                </div>
+
+                <div class="form-group">
+                    <label for="placa">Placa</label>
+                    <input type="text" id="placa" placeholder="ABC-1234">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="cor">Cor do Veículo</label>
+                    <input type="text" id="cor" placeholder="Ex: Preto">
+                </div>
+
+                <div class="form-group">
+                    <label for="numeroOS">Número da OS</label>
+                    <input type="text" id="numeroOS" placeholder="Ex: #1023">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="observacoesVeiculo">Observações do Veículo</label>
+                <textarea id="observacoesVeiculo" placeholder="Condições especiais, riscos, manchas, etc..."></textarea>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>📦 Materiais Necessários</h3>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="material">Material</label>
+                    <input type="text" id="material" placeholder="Nome do material">
+                </div>
+
+                <div class="form-group">
+                    <label for="quantidade">Quantidade</label>
+                    <input type="text" id="quantidade" placeholder="Ex: 2 unidades">
+                </div>
+            </div>
+
+            <button onclick="adicionarMaterial()" style="margin-top: 10px;">+ Adicionar Material</button>
+
+            <div id="listaMateriais" class="materiais-list" style="display: none;">
+                <!-- Materiais adicionados aparecerão aqui -->
+            </div>
+
+            <div class="form-group" style="margin-top: 20px;">
+                <label>Checklist Pré-Serviço</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="check1" value="inspecao">
+                        <label for="check1">Inspeção Visual</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="check2" value="fotos">
+                        <label for="check2">Fotos do Veículo</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="check3" value="teste">
+                        <label for="check3">Teste de Superfície</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>💰 Informações Financeiras</h3>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="valorServico">Valor do Serviço (R$)</label>
+                    <input type="number" id="valorServico" step="0.01" placeholder="0,00">
+                </div>
+
+                <div class="form-group">
+                    <label for="comissaoFuncionario">Comissão (R$)</label>
+                    <input type="number" id="comissaoFuncionario" step="0.01" placeholder="0,00">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="formaPagamento">Forma de Pagamento</label>
+                <select id="formaPagamento">
+                    <option value="">Selecione</option>
+                    <option value="Dinheiro">Dinheiro</option>
+                    <option value="Cartão de Crédito">Cartão de Crédito</option>
+                    <option value="Cartão de Débito">Cartão de Débito</option>
+                    <option value="PIX">PIX</option>
+                    <option value="Transferência">Transferência</option>
+                    <option value="A Pagar">A Pagar</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="statusPagamento">Status do Pagamento</label>
+                <select id="statusPagamento">
+                    <option value="">Selecione</option>
+                    <option value="Pendente">Pendente</option>
+                    <option value="Pago">Pago</option>
+                    <option value="Parcial">Parcial</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>📝 Observações e Instruções</h3>
+            
+            <div class="form-group">
+                <label for="instrucoes">Instruções Especiais</label>
+                <textarea id="instrucoes" placeholder="Instruções específicas para o funcionário executar a tarefa..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="observacoesGerais">Observações Gerais</label>
+                <textarea id="observacoesGerais" placeholder="Qualquer informação adicional relevante..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Notificações</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="notif1" value="email" checked>
+                        <label for="notif1">E-mail</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="notif2" value="sistema" checked>
+                        <label for="notif2">Sistema</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="notif3" value="whatsapp">
+                        <label for="notif3">WhatsApp</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button class="btn-secondary" onclick="limparFormulario()">Limpar Formulário</button>
+                <button onclick="cadastrarTarefa()">Cadastrar Tarefa</button>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>

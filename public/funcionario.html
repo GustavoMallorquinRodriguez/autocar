@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="funcionario.css" /> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Funcionário - Estética Automotiva</title>
+
+</head>
+<body>
+    <header class="header">
+        <div class="diagonal-lines">
+            <div class="line line1"></div>
+            <div class="line line2"></div>
+            <div class="line line3"></div>
+            <div class="line line4"></div>
+            <div class="line line5"></div>
+            <div class="line line6"></div>
+        </div>
+        <div class="header-content">
+            <a href="#" class="back-button" onclick="window.history.back(); return false;">← Voltar</a>
+            <div class="header-title">
+                <h1>Cadastro de Funcionário</h1>
+            </div>
+            <div style="width: 100px;"></div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="form-header">
+            <h2>👤 Novo Funcionário</h2>
+            <p>Preencha os dados abaixo para cadastrar um novo funcionário no sistema</p>
+        </div>
+
+        <div id="mensagemSucesso" class="success-message">
+            <h2>✓ Funcionário Cadastrado com Sucesso!</h2>
+            <p>Os dados foram salvos no sistema.</p>
+        </div>
+
+        <div id="formulario" class="content-grid">
+            <div class="card">
+                <h3>📋 Dados Pessoais</h3>
+                <div class="form-group">
+                    <label for="nome">Nome Completo *</label>
+                    <input type="text" id="nome" required placeholder="Digite o nome completo">
+                </div>
+                
+                <div class="form-group">
+                    <label for="cpf">CPF *</label>
+                    <input type="text" id="cpf" required placeholder="000.000.000-00">
+                </div>
+
+                <div class="form-group">
+                    <label for="rg">RG</label>
+                    <input type="text" id="rg" placeholder="00.000.000-0">
+                </div>
+
+                <div class="form-group">
+                    <label for="dataNascimento">Data de Nascimento *</label>
+                    <input type="date" id="dataNascimento" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="telefone">Telefone *</label>
+                    <input type="tel" id="telefone" required placeholder="(00) 00000-0000">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" placeholder="funcionario@email.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="endereco">Endereço Completo</label>
+                    <textarea id="endereco" placeholder="Rua, número, bairro, cidade, estado"></textarea>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>💼 Informações Profissionais</h3>
+                
+                <div class="form-group">
+                    <label for="matricula">Matrícula *</label>
+                    <input type="text" id="matricula" required placeholder="#EMP-2024-XXX">
+                </div>
+
+                <div class="form-group">
+                    <label for="cargo">Cargo *</label>
+                    <select id="cargo" required>
+                        <option value="">Selecione o cargo</option>
+                        <option value="Especialista Técnico">Especialista Técnico</option>
+                        <option value="Polidor">Polidor</option>
+                        <option value="Lavador">Lavador</option>
+                        <option value="Vitrificador">Vitrificador</option>
+                        <option value="Estofador">Estofador</option>
+                        <option value="Gerente">Gerente</option>
+                        <option value="Supervisor">Supervisor</option>
+                        <option value="Recepcionista">Recepcionista</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="departamento">Departamento *</label>
+                    <select id="departamento" required>
+                        <option value="">Selecione o departamento</option>
+                        <option value="Serviços Especializados">Serviços Especializados</option>
+                        <option value="Estética Básica">Estética Básica</option>
+                        <option value="Polimento e Vitrificação">Polimento e Vitrificação</option>
+                        <option value="Administrativo">Administrativo</option>
+                        <option value="Atendimento">Atendimento</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="dataAdmissao">Data de Admissão *</label>
+                    <input type="date" id="dataAdmissao" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="supervisor">Supervisor</label>
+                    <input type="text" id="supervisor" placeholder="Nome do supervisor">
+                </div>
+
+                <div class="form-group">
+                    <label for="turno">Turno de Trabalho *</label>
+                    <select id="turno" required>
+                        <option value="">Selecione o turno</option>
+                        <option value="Manhã (08:00-12:00)">Manhã (08:00-12:00)</option>
+                        <option value="Tarde (13:00-17:00)">Tarde (13:00-17:00)</option>
+                        <option value="Manhã e Tarde (08:00-18:00)">Manhã e Tarde (08:00-18:00)</option>
+                        <option value="Noturno (18:00-22:00)">Noturno (18:00-22:00)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Especializações</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="esp-polimento" value="polimento">
+                            <label for="esp-polimento">Polimento</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="esp-vitrificacao" value="vitrificacao">
+                            <label for="esp-vitrificacao">Vitrificação</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="esp-higienizacao" value="higienizacao">
+                            <label for="esp-higienizacao">Higienização</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="esp-cristalizacao" value="cristalizacao">
+                            <label for="esp-cristalizacao">Cristalização</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>💰 Remuneração e Metas</h3>
+                
+                <div class="form-group">
+                    <label for="salario">Salário Base (R$)</label>
+                    <input type="number" id="salario" step="0.01" placeholder="0,00">
+                </div>
+
+                <div class="form-group">
+                    <label for="comissao">Comissão (%)</label>
+                    <input type="number" id="comissao" step="0.01" placeholder="0,00">
+                </div>
+
+                <div class="form-group">
+                    <label for="metaServicos">Meta de Serviços (Mensal)</label>
+                    <input type="number" id="metaServicos" placeholder="Ex: 25">
+                </div>
+
+                <div class="form-group">
+                    <label for="metaFaturamento">Meta de Faturamento (R$)</label>
+                    <input type="number" id="metaFaturamento" step="0.01" placeholder="Ex: 12000,00">
+                </div>
+
+                <div class="form-group">
+                    <label for="banco">Banco</label>
+                    <input type="text" id="banco" placeholder="Nome do banco">
+                </div>
+
+                <div class="form-group">
+                    <label for="agencia">Agência</label>
+                    <input type="text" id="agencia" placeholder="0000">
+                </div>
+
+                <div class="form-group">
+                    <label for="conta">Conta</label>
+                    <input type="text" id="conta" placeholder="00000-0">
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>🔐 Acesso ao Sistema</h3>
+                
+                <div class="form-group">
+                    <label for="usuario">Nome de Usuário *</label>
+                    <input type="text" id="usuario" required placeholder="usuario.login">
+                </div>
+
+                <div class="form-group">
+                    <label for="senha">Senha Temporária *</label>
+                    <input type="password" id="senha" required placeholder="Mínimo 6 caracteres">
+                </div>
+
+                <div class="form-group">
+                    <label for="nivelAcesso">Nível de Acesso *</label>
+                    <select id="nivelAcesso" required>
+                        <option value="">Selecione o nível</option>
+                        <option value="Básico - Funcionário">Básico - Funcionário</option>
+                        <option value="Intermediário - Supervisor">Intermediário - Supervisor</option>
+                        <option value="Avançado - Gerente">Avançado - Gerente</option>
+                        <option value="Administrador">Administrador</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Permissões</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="perm-agenda" value="agenda">
+                            <label for="perm-agenda">Agenda</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="perm-os" value="os">
+                            <label for="perm-os">Ordens de Serviço</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="perm-estoque" value="estoque">
+                            <label for="perm-estoque">Estoque</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="perm-relatorios" value="relatorios">
+                            <label for="perm-relatorios">Relatórios</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="observacoes">Observações</label>
+                    <textarea id="observacoes" placeholder="Informações adicionais sobre o funcionário..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-grid">
+            <div class="card" style="grid-column: 1 / -1;">
+                <div class="button-group">
+                    <button class="btn-secondary" type="button" onclick="limparFormulario()">Limpar Formulário</button>
+                    <button type="button" onclick="cadastrarFuncionario()">Cadastrar Funcionário</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

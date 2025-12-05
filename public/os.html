@@ -1,0 +1,251 @@
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="os.css" /> 
+    <script src="os.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ordem de Serviço - Estética Automotiva</title>
+
+</head>
+<body>
+    <header class="header">
+        <div class="diagonal-lines">
+            <div class="line line1"></div>
+            <div class="line line2"></div>
+            <div class="line line3"></div>
+            <div class="line line4"></div>
+            <div class="line line5"></div>
+            <div class="line line6"></div>
+        </div>
+        <div class="header-content">
+            <div class="header-left">
+                <h1>Ordem de Serviço</h1>
+                <p>Estética Automotiva</p>
+            </div>
+            <div class="header-right">
+                <div class="os-number">OS #1022</div>
+                <div class="os-status">EM ANDAMENTO</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="top-section">
+            <div class="card">
+                <div class="card-title">🚗 Informações do Veículo</div>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">Modelo</span>
+                        <span class="info-value">Honda HR-V</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Ano</span>
+                        <span class="info-value">2019</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Placa</span>
+                        <span class="info-value">ABC-1234</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Cor</span>
+                        <span class="info-value">Prata</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Quilometragem</span>
+                        <span class="info-value">45.230 km</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Combustível</span>
+                        <span class="info-value">1/2 Tanque</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">👤 Informações do Cliente</div>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">Nome</span>
+                        <span class="info-value">João Silva</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Telefone</span>
+                        <span class="info-value">(41) 99999-8888</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Data Entrada</span>
+                        <span class="info-value">05/12/2025 - 08:30</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Previsão Entrega</span>
+                        <span class="info-value">05/12/2025 - 18:00</span>
+                    </div>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 60%;">60% Concluído</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="services-section">
+            <div class="card">
+                <div class="card-title">🛠️ Serviços Solicitados</div>
+                
+                <div class="service-item">
+                    <div class="service-name">Polimento Técnico Completo</div>
+                    <div class="service-responsible">👤 Carlos Santos</div>
+                    <div class="service-time">⏱️ 3h estimadas</div>
+                    <div class="service-checkbox">
+                        <input type="checkbox" checked onclick="updateProgress()">
+                    </div>
+                </div>
+
+                <div class="service-item">
+                    <div class="service-name">Higienização Interna Profunda</div>
+                    <div class="service-responsible">👤 Maria Oliveira</div>
+                    <div class="service-time">⏱️ 2h estimadas</div>
+                    <div class="service-checkbox">
+                        <input type="checkbox" onclick="updateProgress()">
+                    </div>
+                </div>
+
+                <div class="service-item">
+                    <div class="service-name">Vitrificação de Pintura</div>
+                    <div class="service-responsible">👤 Pedro Costa</div>
+                    <div class="service-time">⏱️ 4h estimadas</div>
+                    <div class="service-checkbox">
+                        <input type="checkbox" onclick="updateProgress()">
+                    </div>
+                </div>
+
+                <div class="service-item">
+                    <div class="service-name">Limpeza de Motor</div>
+                    <div class="service-responsible">👤 Ana Paula</div>
+                    <div class="service-time">⏱️ 1h estimadas</div>
+                    <div class="service-checkbox">
+                        <input type="checkbox" onclick="updateProgress()">
+                    </div>
+                </div>
+
+                <div class="service-item">
+                    <div class="service-name">Hidratação de Couro</div>
+                    <div class="service-responsible">👤 Ricardo Lima</div>
+                    <div class="service-time">⏱️ 1.5h estimadas</div>
+                    <div class="service-checkbox">
+                        <input type="checkbox" onclick="updateProgress()">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-section">
+            <div class="card">
+                <div class="card-title">📅 Linha do Tempo</div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-dot">✓</div>
+                    <div class="timeline-content">
+                        <h4>OS Criada</h4>
+                        <p>05/12/2025 - 08:30 por Recepção</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot">✓</div>
+                    <div class="timeline-content">
+                        <h4>Inspeção Inicial</h4>
+                        <p>05/12/2025 - 09:00 por Carlos Santos</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot">✓</div>
+                    <div class="timeline-content">
+                        <h4>Polimento Iniciado</h4>
+                        <p>05/12/2025 - 09:30 por Carlos Santos</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot">⏱️</div>
+                    <div class="timeline-content">
+                        <h4>Em Andamento</h4>
+                        <p>Aguardando conclusão dos serviços</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">💰 Informações Financeiras</div>
+                
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">Polimento Técnico</span>
+                        <span class="info-value">R$ 450,00</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Higienização Interna</span>
+                        <span class="info-value">R$ 280,00</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Vitrificação</span>
+                        <span class="info-value">R$ 800,00</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Limpeza Motor</span>
+                        <span class="info-value">R$ 120,00</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Hidratação Couro</span>
+                        <span class="info-value">R$ 180,00</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Desconto</span>
+                        <span class="info-value">- R$ 80,00</span>
+                    </div>
+                </div>
+
+                <div class="info-item" style="margin-top: 20px; padding-top: 20px; border-top: 2px solid #e0e0e0;">
+                    <span class="info-label">Total</span>
+                    <span class="info-value" style="font-size: 1.5em; color: #00b170;">R$ 1.750,00</span>
+                </div>
+
+                <div class="info-item" style="margin-top: 15px;">
+                    <span class="info-label">Forma de Pagamento</span>
+                    <span class="info-value">Cartão de Crédito - 3x</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">📸 Fotos do Veículo</div>
+            <div class="photos-grid">
+                <div class="photo-placeholder" onclick="alert('Adicionar foto')">📷</div>
+                <div class="photo-placeholder" onclick="alert('Adicionar foto')">📷</div>
+                <div class="photo-placeholder" onclick="alert('Adicionar foto')">📷</div>
+                <div class="photo-placeholder" onclick="alert('Adicionar foto')">📷</div>
+                <div class="photo-placeholder" onclick="alert('Adicionar foto')">📷</div>
+                <div class="photo-placeholder" onclick="alert('Adicionar foto')">📷</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">📝 Observações e Notas</div>
+            <textarea class="notes-textarea" placeholder="Digite aqui observações sobre o serviço, condições do veículo, solicitações especiais do cliente, etc...">Cliente solicitou atenção especial ao capô (risco superficial).
+Bancos de couro com manchas de café - necessário tratamento especial.
+Cliente aguardará na loja.</textarea>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn btn-secondary" onclick="alert('Imprimindo OS...')">🖨️ Imprimir OS</button>
+            <button class="btn btn-secondary" onclick="alert('Enviando para cliente...')">📧 Enviar para Cliente</button>
+            <button class="btn btn-danger" onclick="alert('Pausando serviço...')">⏸️ Pausar Serviço</button>
+            <button class="btn btn-primary" onclick="alert('Salvando alterações...')">💾 Salvar Alterações</button>
+            <button class="btn btn-primary" onclick="alert('Finalizando OS...')">✅ Finalizar OS</button>
+        </div>
+    </div>
+
+</body>
+</html>
