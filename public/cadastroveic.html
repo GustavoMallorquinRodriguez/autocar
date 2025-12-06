@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="stylesheet" href="cadastroveic.css" />
+        <script src="cadastroveic.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Cadastro de Veículos - Estética Automotiva</title>
+        
+    </head>
+    <body>
+        <header class="header">
+            <div class="diagonal-lines">
+                <div class="line line1"></div>
+                <div class="line line2"></div>
+                <div class="line line3"></div>
+                <div class="line line4"></div>
+                <div class="line line5"></div>
+                <div class="line line6"></div>
+            </div>
+            <div class="header-content">
+                <h1>Estética Automotiva</h1>
+                <h2>Cadastro de Veículos</h2>
+            </div>
+            <div class="user-name">
+                <p>Nome do</p>
+                <h3>Funcionário</h3>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="form-card">
+                <div id="successMessage" class="success-message">
+                    ✅ Veículo cadastrado com sucesso!
+                </div>
+
+                <h3>🚗 Novo Veículo</h3>
+
+                <form id="vehicleForm">
+                    <div class="form-section">
+                        <h4>Dados do Veículo</h4>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="placa">Placa *</label>
+                                <input type="text" id="placa" name="placa" placeholder="ABC-1234" required maxlength="8">
+                            </div>
+                            <div class="form-group">
+                                <label for="marca">Marca *</label>
+                                <select id="marca" name="marca" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="Chevrolet">Chevrolet</option>
+                                    <option value="Fiat">Fiat</option>
+                                    <option value="Ford">Ford</option>
+                                    <option value="Honda">Honda</option>
+                                    <option value="Hyundai">Hyundai</option>
+                                    <option value="Jeep">Jeep</option>
+                                    <option value="Nissan">Nissan</option>
+                                    <option value="Peugeot">Peugeot</option>
+                                    <option value="Renault">Renault</option>
+                                    <option value="Toyota">Toyota</option>
+                                    <option value="Volkswagen">Volkswagen</option>
+                                    <option value="Outra">Outra</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="modelo">Modelo *</label>
+                                <input type="text" id="modelo" name="modelo" placeholder="Ex: Corolla, Civic" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="ano">Ano *</label>
+                                <input type="number" id="ano" name="ano" placeholder="2020" min="1900" max="2025" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="cor">Cor *</label>
+                                <select id="cor" name="cor" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="Preto">Preto</option>
+                                    <option value="Branco">Branco</option>
+                                    <option value="Prata">Prata</option>
+                                    <option value="Cinza">Cinza</option>
+                                    <option value="Vermelho">Vermelho</option>
+                                    <option value="Azul">Azul</option>
+                                    <option value="Verde">Verde</option>
+                                    <option value="Amarelo">Amarelo</option>
+                                    <option value="Bege">Bege</option>
+                                    <option value="Outra">Outra</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="tipo">Tipo de Veículo *</label>
+                                <select id="tipo" name="tipo" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="Sedan">Sedan</option>
+                                    <option value="Hatch">Hatch</option>
+                                    <option value="SUV">SUV</option>
+                                    <option value="Pickup">Pickup</option>
+                                    <option value="Van">Van</option>
+                                    <option value="Caminhonete">Caminhonete</option>
+                                    <option value="Esportivo">Esportivo</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h4>Dados do Proprietário</h4>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="cpfProprietario">CPF do Proprietário *</label>
+                                <input type="text" id="cpfProprietario" name="cpfProprietario" placeholder="000.000.000-00" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="nomeProprietario">Nome do Proprietário *</label>
+                                <input type="text" id="nomeProprietario" name="nomeProprietario" placeholder="Nome completo" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="telefoneProprietario">Telefone *</label>
+                                <input type="tel" id="telefoneProprietario" name="telefoneProprietario" placeholder="(00) 00000-0000" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="emailProprietario">E-mail</label>
+                                <input type="email" id="emailProprietario" name="emailProprietario" placeholder="email@exemplo.com">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h4>Informações Adicionais</h4>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="kilometragem">Kilometragem Atual</label>
+                                <input type="number" id="kilometragem" name="kilometragem" placeholder="Ex: 50000" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="combustivel">Tipo de Combustível</label>
+                                <select id="combustivel" name="combustivel">
+                                    <option value="">Selecione...</option>
+                                    <option value="Gasolina">Gasolina</option>
+                                    <option value="Etanol">Etanol</option>
+                                    <option value="Flex">Flex</option>
+                                    <option value="Diesel">Diesel</option>
+                                    <option value="GNV">GNV</option>
+                                    <option value="Elétrico">Elétrico</option>
+                                    <option value="Híbrido">Híbrido</option>
+                                </select>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="observacoes">Observações</label>
+                                <textarea id="observacoes" name="observacoes" placeholder="Informações adicionais sobre o veículo..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="btn-container">
+                        <button type="submit" class="btn btn-primary">Cadastrar Veículo</button>
+                        <button type="reset" class="btn btn-secondary">Limpar Formulário</button>
+                        <button type="button" class="btn btn-back" onclick="window.history.back()">Voltar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </body>
+</html>

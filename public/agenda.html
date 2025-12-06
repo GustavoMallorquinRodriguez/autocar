@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="stylesheet" href="agenda.css" />
+        <script src="agenda.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Agenda - Estética Automotiva</title>
+    </head>
+    <body>
+        <header class="header">
+            <div class="diagonal-lines">
+                <div class="line line1"></div>
+                <div class="line line2"></div>
+                <div class="line line3"></div>
+                <div class="line line4"></div>
+                <div class="line line5"></div>
+                <div class="line line6"></div>
+            </div>
+            <div class="header-content">
+                <h1>Estética Automotiva</h1>
+                <h2>Agenda de Serviços</h2>
+            </div>
+            <div class="user-name">
+                <p>Nome do</p>
+                <h3>Funcionário</h3>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="top-actions">
+                <div class="view-toggle">
+                    <button class="toggle-btn active" onclick="switchView('calendar')">📅 Calendário</button>
+                    <button class="toggle-btn" onclick="switchView('list')">📋 Lista</button>
+                </div>
+                <button class="btn-new" onclick="openModal()">➕ Novo Agendamento</button>
+            </div>
+
+            <div class="filter-section">
+                <div class="filter-grid">
+                    <div class="form-group">
+                        <label>Filtrar por Serviço:</label>
+                        <select id="filterService" onchange="filterEvents()">
+                            <option value="">Todos</option>
+                            <option value="polimento">Polimento Técnico</option>
+                            <option value="higienizacao">Higienização Interna</option>
+                            <option value="vitrificacao">Vitrificação</option>
+                            <option value="lavagem">Lavagem Completa</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Filtrar por Status:</label>
+                        <select id="filterStatus" onchange="filterEvents()">
+                            <option value="">Todos</option>
+                            <option value="agendado">Agendado</option>
+                            <option value="em-andamento">Em Andamento</option>
+                            <option value="concluido">Concluído</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="calendar-view calendar-active">
+                <div class="calendar-header">
+                    <div class="calendar-nav">
+                        <button class="nav-btn" onclick="previousMonth()">◀</button>
+                        <div class="current-month" id="currentMonth">Dezembro 2025</div>
+                        <button class="nav-btn" onclick="nextMonth()">▶</button>
+                    </div>
+                    <button class="toggle-btn" onclick="goToToday()">Hoje</button>
+                </div>
+                <div class="calendar-grid" id="calendarGrid"></div>
+            </div>
+
+            <div class="list-view" id="listView"></div>
+        </div>
+
+        <div class="modal" id="eventModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="modalTitle">📅 Novo Agendamento</h3>
+                </div>
+                <form id="eventForm">
+                    <div class="form-group">
+                        <label>Data *</label>
+                        <input type="date" id="eventDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Horário *</label>
+                        <input type="time" id="eventTime" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Cliente *</label>
+                        <input type="text" id="eventClient" placeholder="Nome do cliente" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Veículo *</label>
+                        <input type="text" id="eventVehicle" placeholder="Ex: Corolla 2020" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Placa</label>
+                        <input type="text" id="eventPlate" placeholder="ABC-1234" maxlength="8">
+                    </div>
+                    <div class="form-group">
+                        <label>Serviço *</label>
+                        <select id="eventService" required>
+                            <option value="">Selecione...</option>
+                            <option value="polimento">Polimento Técnico</option>
+                            <option value="higienizacao">Higienização Interna</option>
+                            <option value="vitrificacao">Vitrificação</option>
+                            <option value="lavagem">Lavagem Completa</option>
+                            <option value="cristalizacao">Cristalização de Vidros</option>
+                            <option value="enceramento">Enceramento</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Responsável</label>
+                        <select id="eventResponsible">
+                            <option value="">Selecione...</option>
+                            <option value="joao">João Silva</option>
+                            <option value="maria">Maria Santos</option>
+                            <option value="pedro">Pedro Costa</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="eventStatus">
+                            <option value="agendado">Agendado</option>
+                            <option value="em-andamento">Em Andamento</option>
+                            <option value="concluido">Concluído</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Observações</label>
+                        <textarea id="eventNotes" placeholder="Observações adicionais..."></textarea>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="submit" class="btn-modal btn-save">Salvar</button>
+                        <button type="button" class="btn-modal btn-cancel" onclick="closeModal()">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </body>
+</html>
