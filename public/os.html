@@ -18,234 +18,279 @@
             <div class="line line6"></div>
         </div>
         <div class="header-content">
-            <div class="header-left">
-                <h1>Ordem de Serviço</h1>
-                <p>Estética Automotiva</p>
+            <a href="#" class="back-button" onclick="window.history.back(); return false;">← Voltar</a>
+            <div class="header-title">
+                <h1>Nova Ordem de Serviço</h1>
             </div>
-            <div class="header-right">
-                <div class="os-number">OS #1022</div>
-                <div class="os-status">EM ANDAMENTO</div>
-            </div>
+            <div class="os-number" id="osNumber">OS #1025</div>
         </div>
     </header>
 
     <div class="container">
-        <div class="top-section">
-            <div class="card">
-                <div class="card-title">🚗 Informações do Veículo</div>
-                <div class="info-grid">
-                    <div class="info-item">
-                        <span class="info-label">Modelo</span>
-                        <span class="info-value">Honda HR-V</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Ano</span>
-                        <span class="info-value">2019</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Placa</span>
-                        <span class="info-value">ABC-1234</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Cor</span>
-                        <span class="info-value">Prata</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Quilometragem</span>
-                        <span class="info-value">45.230 km</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Combustível</span>
-                        <span class="info-value">1/2 Tanque</span>
-                    </div>
-                </div>
-            </div>
+        <div class="success-message" id="successMessage">
+            <h3>✅ Ordem de Serviço Criada com Sucesso!</h3>
+            <p>OS #<span id="successOsNumber"></span> foi registrada no sistema.</p>
+        </div>
 
+        <form id="osForm">
             <div class="card">
                 <div class="card-title">👤 Informações do Cliente</div>
-                <div class="info-grid">
-                    <div class="info-item">
-                        <span class="info-label">Nome</span>
-                        <span class="info-value">João Silva</span>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Cliente *</label>
+                        <select id="clientSelect" required onchange="loadClientData()">
+                            <option value="">Selecione o cliente</option>
+                            <option value="1">João Silva - (45) 99999-8888</option>
+                            <option value="2">Maria Santos - (45) 99888-7777</option>
+                            <option value="3">Pedro Costa - (45) 99777-6666</option>
+                        </select>
                     </div>
-                    <div class="info-item">
-                        <span class="info-label">Telefone</span>
-                        <span class="info-value">(41) 99999-8888</span>
+                    <div class="form-group">
+                        <label>Telefone *</label>
+                        <input type="tel" id="clientPhone" required placeholder="(00) 00000-0000">
                     </div>
-                    <div class="info-item">
-                        <span class="info-label">Data Entrada</span>
-                        <span class="info-value">05/12/2025 - 08:30</span>
+                    <div class="form-group">
+                        <label>CPF</label>
+                        <input type="text" id="clientCpf" placeholder="000.000.000-00">
                     </div>
-                    <div class="info-item">
-                        <span class="info-label">Previsão Entrega</span>
-                        <span class="info-value">05/12/2025 - 18:00</span>
-                    </div>
-                </div>
-                <div class="progress-container">
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 60%;">60% Concluído</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="services-section">
-            <div class="card">
-                <div class="card-title">🛠️ Serviços Solicitados</div>
-                
-                <div class="service-item">
-                    <div class="service-name">Polimento Técnico Completo</div>
-                    <div class="service-responsible">👤 Carlos Santos</div>
-                    <div class="service-time">⏱️ 3h estimadas</div>
-                    <div class="service-checkbox">
-                        <input type="checkbox" checked onclick="updateProgress()">
-                    </div>
-                </div>
-
-                <div class="service-item">
-                    <div class="service-name">Higienização Interna Profunda</div>
-                    <div class="service-responsible">👤 Maria Oliveira</div>
-                    <div class="service-time">⏱️ 2h estimadas</div>
-                    <div class="service-checkbox">
-                        <input type="checkbox" onclick="updateProgress()">
-                    </div>
-                </div>
-
-                <div class="service-item">
-                    <div class="service-name">Vitrificação de Pintura</div>
-                    <div class="service-responsible">👤 Pedro Costa</div>
-                    <div class="service-time">⏱️ 4h estimadas</div>
-                    <div class="service-checkbox">
-                        <input type="checkbox" onclick="updateProgress()">
-                    </div>
-                </div>
-
-                <div class="service-item">
-                    <div class="service-name">Limpeza de Motor</div>
-                    <div class="service-responsible">👤 Ana Paula</div>
-                    <div class="service-time">⏱️ 1h estimadas</div>
-                    <div class="service-checkbox">
-                        <input type="checkbox" onclick="updateProgress()">
-                    </div>
-                </div>
-
-                <div class="service-item">
-                    <div class="service-name">Hidratação de Couro</div>
-                    <div class="service-responsible">👤 Ricardo Lima</div>
-                    <div class="service-time">⏱️ 1.5h estimadas</div>
-                    <div class="service-checkbox">
-                        <input type="checkbox" onclick="updateProgress()">
+                    <div class="form-group">
+                        <label>E-mail</label>
+                        <input type="email" id="clientEmail" placeholder="cliente@email.com">
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="timeline-section">
             <div class="card">
-                <div class="card-title">📅 Linha do Tempo</div>
-                
-                <div class="timeline-item">
-                    <div class="timeline-dot">✓</div>
-                    <div class="timeline-content">
-                        <h4>OS Criada</h4>
-                        <p>05/12/2025 - 08:30 por Recepção</p>
+                <div class="card-title">🚗 Informações do Veículo</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Placa *</label>
+                        <input type="text" id="vehiclePlate" required placeholder="ABC-1234" maxlength="8">
+                    </div>
+                    <div class="form-group">
+                        <label>Modelo *</label>
+                        <input type="text" id="vehicleModel" required placeholder="Ex: Honda HR-V">
+                    </div>
+                    <div class="form-group">
+                        <label>Ano</label>
+                        <input type="number" id="vehicleYear" placeholder="2020" min="1900" max="2025">
+                    </div>
+                    <div class="form-group">
+                        <label>Cor</label>
+                        <select id="vehicleColor">
+                            <option value="">Selecione...</option>
+                            <option value="Preto">Preto</option>
+                            <option value="Branco">Branco</option>
+                            <option value="Prata">Prata</option>
+                            <option value="Cinza">Cinza</option>
+                            <option value="Vermelho">Vermelho</option>
+                            <option value="Azul">Azul</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Quilometragem</label>
+                        <input type="number" id="vehicleKm" placeholder="45000">
+                    </div>
+                    <div class="form-group">
+                        <label>Combustível</label>
+                        <select id="vehicleFuel">
+                            <option value="">Selecione...</option>
+                            <option value="Vazio">Vazio</option>
+                            <option value="1/4 Tanque">1/4 Tanque</option>
+                            <option value="1/2 Tanque">1/2 Tanque</option>
+                            <option value="3/4 Tanque">3/4 Tanque</option>
+                            <option value="Completo">Completo</option>
+                        </select>
                     </div>
                 </div>
+            </div>
 
-                <div class="timeline-item">
-                    <div class="timeline-dot">✓</div>
-                    <div class="timeline-content">
-                        <h4>Inspeção Inicial</h4>
-                        <p>05/12/2025 - 09:00 por Carlos Santos</p>
+            <div class="card">
+                <div class="card-title">⏰ Datas e Horários</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Data de Entrada *</label>
+                        <input type="date" id="dateEntry" required>
                     </div>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-dot">✓</div>
-                    <div class="timeline-content">
-                        <h4>Polimento Iniciado</h4>
-                        <p>05/12/2025 - 09:30 por Carlos Santos</p>
+                    <div class="form-group">
+                        <label>Hora de Entrada *</label>
+                        <input type="time" id="timeEntry" required>
                     </div>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-dot">⏱️</div>
-                    <div class="timeline-content">
-                        <h4>Em Andamento</h4>
-                        <p>Aguardando conclusão dos serviços</p>
+                    <div class="form-group">
+                        <label>Previsão de Entrega *</label>
+                        <input type="date" id="dateDelivery" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Hora de Entrega</label>
+                        <input type="time" id="timeDelivery">
                     </div>
                 </div>
             </div>
 
             <div class="card">
-                <div class="card-title">💰 Informações Financeiras</div>
-                
-                <div class="info-grid">
-                    <div class="info-item">
-                        <span class="info-label">Polimento Técnico</span>
-                        <span class="info-value">R$ 450,00</span>
+                <div class="card-title">🛠️ Serviços Solicitados</div>
+                <div class="service-selector">
+                    <div class="service-item">
+                        <input type="checkbox" class="service-check" data-price="450" data-time="3h" onchange="updateSummary()">
+                        <div class="service-details">
+                            <div class="service-name">Polimento Técnico Completo</div>
+                            <div class="service-time">⏱️ Duração estimada: 3h</div>
+                        </div>
+                        <div class="service-price">R$ 450,00</div>
+                        <select class="responsible-select">
+                            <option value="">Responsável</option>
+                            <option value="carlos">Carlos Santos</option>
+                            <option value="maria">Maria Oliveira</option>
+                            <option value="pedro">Pedro Costa</option>
+                        </select>
                     </div>
-                    <div class="info-item">
-                        <span class="info-label">Higienização Interna</span>
-                        <span class="info-value">R$ 280,00</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Vitrificação</span>
-                        <span class="info-value">R$ 800,00</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Limpeza Motor</span>
-                        <span class="info-value">R$ 120,00</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Hidratação Couro</span>
-                        <span class="info-value">R$ 180,00</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Desconto</span>
-                        <span class="info-value">- R$ 80,00</span>
-                    </div>
-                </div>
 
-                <div class="info-item" style="margin-top: 20px; padding-top: 20px; border-top: 2px solid #e0e0e0;">
-                    <span class="info-label">Total</span>
-                    <span class="info-value" style="font-size: 1.5em; color: #00b170;">R$ 1.750,00</span>
-                </div>
+                    <div class="service-item">
+                        <input type="checkbox" class="service-check" data-price="280" data-time="2h" onchange="updateSummary()">
+                        <div class="service-details">
+                            <div class="service-name">Higienização Interna Profunda</div>
+                            <div class="service-time">⏱️ Duração estimada: 2h</div>
+                        </div>
+                        <div class="service-price">R$ 280,00</div>
+                        <select class="responsible-select">
+                            <option value="">Responsável</option>
+                            <option value="carlos">Carlos Santos</option>
+                            <option value="maria">Maria Oliveira</option>
+                            <option value="pedro">Pedro Costa</option>
+                        </select>
+                    </div>
 
-                <div class="info-item" style="margin-top: 15px;">
-                    <span class="info-label">Forma de Pagamento</span>
-                    <span class="info-value">Cartão de Crédito - 3x</span>
+                    <div class="service-item">
+                        <input type="checkbox" class="service-check" data-price="800" data-time="4h" onchange="updateSummary()">
+                        <div class="service-details">
+                            <div class="service-name">Vitrificação de Pintura</div>
+                            <div class="service-time">⏱️ Duração estimada: 4h</div>
+                        </div>
+                        <div class="service-price">R$ 800,00</div>
+                        <select class="responsible-select">
+                            <option value="">Responsável</option>
+                            <option value="carlos">Carlos Santos</option>
+                            <option value="maria">Maria Oliveira</option>
+                            <option value="pedro">Pedro Costa</option>
+                        </select>
+                    </div>
+
+                    <div class="service-item">
+                        <input type="checkbox" class="service-check" data-price="120" data-time="1h" onchange="updateSummary()">
+                        <div class="service-details">
+                            <div class="service-name">Limpeza de Motor</div>
+                            <div class="service-time">⏱️ Duração estimada: 1h</div>
+                        </div>
+                        <div class="service-price">R$ 120,00</div>
+                        <select class="responsible-select">
+                            <option value="">Responsável</option>
+                            <option value="carlos">Carlos Santos</option>
+                            <option value="maria">Maria Oliveira</option>
+                            <option value="ana">Ana Paula</option>
+                        </select>
+                    </div>
+
+                    <div class="service-item">
+                        <input type="checkbox" class="service-check" data-price="180" data-time="1.5h" onchange="updateSummary()">
+                        <div class="service-details">
+                            <div class="service-name">Hidratação de Couro</div>
+                            <div class="service-time">⏱️ Duração estimada: 1.5h</div>
+                        </div>
+                        <div class="service-price">R$ 180,00</div>
+                        <select class="responsible-select">
+                            <option value="">Responsável</option>
+                            <option value="ricardo">Ricardo Lima</option>
+                            <option value="maria">Maria Oliveira</option>
+                        </select>
+                    </div>
+
+                    <div class="service-item">
+                        <input type="checkbox" class="service-check" data-price="150" data-time="1.5h" onchange="updateSummary()">
+                        <div class="service-details">
+                            <div class="service-name">Cristalização de Vidros</div>
+                            <div class="service-time">⏱️ Duração estimada: 1.5h</div>
+                        </div>
+                        <div class="service-price">R$ 150,00</div>
+                        <select class="responsible-select">
+                            <option value="">Responsável</option>
+                            <option value="pedro">Pedro Costa</option>
+                            <option value="carlos">Carlos Santos</option>
+                        </select>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="card">
-            <div class="card-title">📸 Fotos do Veículo</div>
-            <div class="photos-grid">
-                <div class="photo-placeholder" onclick="alert('Adicionar foto')">📷</div>
-                <div class="photo-placeholder" onclick="alert('Adicionar foto')">📷</div>
-                <div class="photo-placeholder" onclick="alert('Adicionar foto')">📷</div>
-                <div class="photo-placeholder" onclick="alert('Adicionar foto')">📷</div>
-                <div class="photo-placeholder" onclick="alert('Adicionar foto')">📷</div>
-                <div class="photo-placeholder" onclick="alert('Adicionar foto')">📷</div>
+            <div class="summary-card">
+                <div class="card-title" style="color: white; border-color: rgba(255,255,255,0.3);">💰 Resumo Financeiro</div>
+                <div class="summary-grid" id="summaryGrid">
+                    <div class="summary-item">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">R$ 0,00</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Desconto:</span>
+                        <span>
+                            <input type="number" id="discount" value="0" min="0" style="width: 100px; padding: 5px; border-radius: 5px; border: none; text-align: right;" onchange="updateSummary()"> %
+                        </span>
+                    </div>
+                </div>
+                <div class="summary-total">
+                    <span>Total:</span>
+                    <span id="totalAmount">R$ 0,00</span>
+                </div>
+
+                <div class="payment-options">
+                    <div class="payment-option" onclick="selectPayment(this)">
+                        <input type="radio" name="payment" value="dinheiro">
+                        <label class="payment-label">💵 Dinheiro</label>
+                    </div>
+                    <div class="payment-option" onclick="selectPayment(this)">
+                        <input type="radio" name="payment" value="pix">
+                        <label class="payment-label">📱 PIX</label>
+                    </div>
+                    <div class="payment-option" onclick="selectPayment(this)">
+                        <input type="radio" name="payment" value="debito">
+                        <label class="payment-label">💳 Débito</label>
+                    </div>
+                    <div class="payment-option" onclick="selectPayment(this)">
+                        <input type="radio" name="payment" value="credito">
+                        <label class="payment-label">💳 Crédito</label>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <div class="card">
-            <div class="card-title">📝 Observações e Notas</div>
-            <textarea class="notes-textarea" placeholder="Digite aqui observações sobre o serviço, condições do veículo, solicitações especiais do cliente, etc...">Cliente solicitou atenção especial ao capô (risco superficial).
-Bancos de couro com manchas de café - necessário tratamento especial.
-Cliente aguardará na loja.</textarea>
-        </div>
+            <div class="card">
+                <div class="card-title">📸 Fotos do Veículo (Opcional)</div>
+                <div class="photos-upload">
+                    <div class="photo-placeholder" onclick="alert('Funcionalidade de upload de fotos')">
+                        📷<br><small style="font-size: 0.5em;">Adicionar</small>
+                    </div>
+                    <div class="photo-placeholder" onclick="alert('Funcionalidade de upload de fotos')">
+                        📷<br><small style="font-size: 0.5em;">Adicionar</small>
+                    </div>
+                    <div class="photo-placeholder" onclick="alert('Funcionalidade de upload de fotos')">
+                        📷<br><small style="font-size: 0.5em;">Adicionar</small>
+                    </div>
+                    <div class="photo-placeholder" onclick="alert('Funcionalidade de upload de fotos')">
+                        📷<br><small style="font-size: 0.5em;">Adicionar</small>
+                    </div>
+                </div>
+            </div>
 
-        <div class="action-buttons">
-            <button class="btn btn-secondary" onclick="alert('Imprimindo OS...')">🖨️ Imprimir OS</button>
-            <button class="btn btn-secondary" onclick="alert('Enviando para cliente...')">📧 Enviar para Cliente</button>
-            <button class="btn btn-danger" onclick="alert('Pausando serviço...')">⏸️ Pausar Serviço</button>
-            <button class="btn btn-primary" onclick="alert('Salvando alterações...')">💾 Salvar Alterações</button>
-            <button class="btn btn-primary" onclick="alert('Finalizando OS...')">✅ Finalizar OS</button>
-        </div>
+            <div class="card">
+                <div class="card-title">📝 Observações e Notas</div>
+                <div class="form-group">
+                    <textarea id="observations" placeholder="Digite aqui observações sobre o serviço, condições do veículo, solicitações especiais do cliente, etc..."></textarea>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button type="button" class="btn btn-secondary" onclick="resetForm()">🔄 Limpar Formulário</button>
+                <button type="button" class="btn btn-secondary" onclick="saveDraft()">💾 Salvar Rascunho</button>
+                <button type="submit" class="btn btn-primary">✅ Criar Ordem de Serviço</button>
+            </div>
+        </form>
     </div>
-
+    
 </body>
 </html>

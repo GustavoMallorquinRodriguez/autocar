@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="visualveic.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizar Veículos - Estética Automotiva</title>
+</head>
+<body>
+    <header class="header">
+        <div class="diagonal-lines">
+            <div class="line line1"></div>
+            <div class="line line2"></div>
+            <div class="line line3"></div>
+            <div class="line line4"></div>
+            <div class="line line5"></div>
+            <div class="line line6"></div>
+        </div>
+        <a href="index.html" class="back-button">← Voltar</a>
+        <div class="header-content">
+            <h1>Estética Automotiva</h1>
+            <h2>Veículos Cadastrados</h2>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="actions-bar">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Buscar por placa, modelo ou proprietário..." oninput="filtrarVeiculos()">
+            </div>
+            <a href="cadastroveic.html" class="btn btn-primary">+ Novo Veículo</a>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat-item">
+                <span class="stat-number" id="totalVeiculos">0</span>
+                <span class="stat-label">Total de Veículos</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" id="marcaMaisComum">-</span>
+                <span class="stat-label">Marca Mais Comum</span>
+            </div>
+        </div>
+
+        <div class="vehicles-list" id="vehiclesList">
+        </div>
+
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <div class="empty-icon">🚗</div>
+            <h3>Nenhum veículo cadastrado</h3>
+            <p>Comece cadastrando seu primeiro veículo!</p>
+            <a href="cadastroveic.html" class="btn btn-primary">Cadastrar Veículo</a>
+        </div>
+    </div>
+
+    <div id="vehicleModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="fecharModal()">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script src="visualveic.js"></script>
+</body>
+</html>

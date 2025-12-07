@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+        <link rel="stylesheet" href="visualos.css" />
+        <script src="visualos.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizar OS - Estética Automotiva</title>
+</head>
+<body>
+    <header class="header">
+        <div class="diagonal-lines">
+            <div class="line line1"></div>
+            <div class="line line2"></div>
+            <div class="line line3"></div>
+            <div class="line line4"></div>
+            <div class="line line5"></div>
+            <div class="line line6"></div>
+        </div>
+        <div class="header-content">
+            <a href="#" class="back-button" onclick="window.history.back(); return false;">← Voltar</a>
+            <div class="header-title">
+                <h1>Ordens de Serviço</h1>
+            </div>
+            <div style="width: 100px;"></div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="filter-section">
+            <div class="filter-grid">
+                <div class="form-group">
+                    <label>Buscar OS:</label>
+                    <input type="text" id="searchOs" placeholder="Número ou placa">
+                </div>
+                <div class="form-group">
+                    <label>Status:</label>
+                    <select id="filterStatus">
+                        <option value="">Todos</option>
+                        <option value="aguardando">Aguardando</option>
+                        <option value="em-andamento">Em Andamento</option>
+                        <option value="concluido">Concluído</option>
+                        <option value="cancelado">Cancelado</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Data Inicial:</label>
+                    <input type="date" id="filterDateStart">
+                </div>
+                <div class="form-group">
+                    <label>Data Final:</label>
+                    <input type="date" id="filterDateEnd">
+                </div>
+                <button class="btn-filter" onclick="filterOS()">🔍 Buscar</button>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total de OS</h3>
+                <div class="stat-number" id="totalOS">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Em Andamento</h3>
+                <div class="stat-number" id="inProgressOS">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Concluídas Hoje</h3>
+                <div class="stat-number" id="completedTodayOS">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Faturamento do Mês</h3>
+                <div class="stat-number" id="monthlyRevenue">R$ 0</div>
+            </div>
+        </div>
+
+        <div class="os-list" id="osList"></div>
+    </div>
+
+    <div class="modal" id="detailModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalOsNumber">OS #1022</h2>
+                <button class="modal-close" onclick="closeModal()">×</button>
+            </div>
+
+            <div class="detail-section">
+                <h3>🚗 Informações do Veículo</h3>
+                <div class="detail-grid">
+                    <div class="os-info">
+                        <div class="info-label">Modelo</div>
+                        <div class="info-value" id="detailModel">-</div>
+                    </div>
+                    <div class="os-info">
+                        <div class="info-label">Placa</div>
+                        <div class="info-value" id="detailPlate">-</div>
+                    </div>
+                    <div class="os-info">
+                        <div class="info-label">Ano</div>
+                        <div class="info-value" id="detailYear">-</div>
+                    </div>
+                    <div class="os-info">
+                        <div class="info-label">Cor</div>
+                        <div class="info-value" id="detailColor">-</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="detail-section">
+                <h3>👤 Informações do Cliente</h3>
+                <div class="detail-grid">
+                    <div class="os-info">
+                        <div class="info-label">Nome</div>
+                        <div class="info-value" id="detailClient">-</div>
+                    </div>
+                    <div class="os-info">
+                        <div class="info-label">Telefone</div>
+                        <div class="info-value" id="detailPhone">-</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="detail-section">
+                <h3>🛠️ Serviços</h3>
+                <div id="detailServices"></div>
+            </div>
+
+            <div class="detail-section">
+                <h3>📅 Linha do Tempo</h3>
+                <div class="timeline" id="detailTimeline"></div>
+            </div>
+
+            <div class="detail-section">
+                <h3>💰 Informações Financeiras</h3>
+                <div class="os-total">Total: <span id="detailTotal">R$ 0,00</span></div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

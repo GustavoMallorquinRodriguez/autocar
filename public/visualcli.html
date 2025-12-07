@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="visualcli.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizar Clientes - Estética Automotiva</title>
+</head>
+<body>
+    <header class="header">
+        <div class="diagonal-lines">
+            <div class="line line1"></div>
+            <div class="line line2"></div>
+            <div class="line line3"></div>
+            <div class="line line4"></div>
+            <div class="line line5"></div>
+            <div class="line line6"></div>
+        </div>
+        <a href="index.html" class="back-button">← Voltar</a>
+        <div class="header-content">
+            <h1>Estética Automotiva</h1>
+            <h2>Clientes Cadastrados</h2>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="actions-bar">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Buscar por nome, CPF/CNPJ ou telefone..." oninput="filtrarClientes()">
+            </div>
+            <a href="cadastrocli.html" class="btn btn-primary">+ Novo Cliente</a>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat-item">
+                <span class="stat-number" id="totalClientes">0</span>
+                <span class="stat-label">Total de Clientes</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" id="pessoasFisicas">0</span>
+                <span class="stat-label">Pessoas Físicas</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" id="pessoasJuridicas">0</span>
+                <span class="stat-label">Pessoas Jurídicas</span>
+            </div>
+        </div>
+
+        <div class="clients-list" id="clientsList">
+        </div>
+
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <div class="empty-icon">👥</div>
+            <h3>Nenhum cliente cadastrado</h3>
+            <p>Comece cadastrando seu primeiro cliente!</p>
+            <a href="cadastrocli.html" class="btn btn-primary">Cadastrar Cliente</a>
+        </div>
+    </div>
+
+    <div id="clientModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="fecharModal()">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script src="visualcli.js"></script>
+</body>
+</html>

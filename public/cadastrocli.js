@@ -40,10 +40,24 @@ function buscarCep() {
     }
 }
 
+function getClientes() {
+    const clientes = localStorage.getItem('clientes');
+    return clientes ? JSON.parse(clientes) : [];
+}
+
+function salvarClientes(clientes) {
+    localStorage.setItem('clientes', JSON.stringify(clientes));
+}
+
+function gerarId() {
+    return Date.now().toString(36) + Math.random().toString(36).substr(2);
+}
+
 function cadastrarCliente(event) {
     event.preventDefault();
     
     const cliente = {
+        id: gerarId(),
         tipoPessoa: document.querySelector('input[name="tipoPessoa"]:checked').value,
         nome: document.getElementById('nome').value,
         documento: document.getElementById('documento').value,
@@ -64,7 +78,9 @@ function cadastrarCliente(event) {
         dataCadastro: new Date().toISOString()
     };
 
-    console.log('Cliente cadastrado:', cliente);
+    const clientes = getClientes();
+    clientes.push(cliente);
+    salvarClientes(clientes);
     
     const successMessage = document.getElementById('successMessage');
     successMessage.classList.add('show');
@@ -80,7 +96,5 @@ function limparFormulario() {
 }
 
 function voltarPagina() {
-    if (confirm('Deseja realmente voltar? Dados não salvos serão perdidos.')) {
-        window.history.back();
-    }
+    window.location.href = 'index.html';
 }
