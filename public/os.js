@@ -1,22 +1,160 @@
-let osCounter = 1025;
+function getOrdensServico() {
+    const data = localStorage.getItem('ordensServico');
+    return data ? JSON.parse(data) : [];
+}
+
+function saveOrdemServico(os) {
+    const ordens = getOrdensServico();
+    ordens.unshift(os);
+    localStorage.setItem('ordensServico', JSON.stringify(ordens));
+}
+
+function getAgendamentos() {
+    const data = localStorage.getItem('agendamentos');
+    return data ? JSON.parse(data) : [];
+}
+
+function criarAgendamentoParaOS(os) {
+    const agendamentos = getAgendamentos();
+    
+    const [dataEntrada, horaEntrada] = os.dates.entry.split(' ');
+    
+    const servicosNomes = os.services.map(s => s.name).join(', ');
+    
+    const novoAgendamento = {
+        id: Date.now(),
+        date: dataEntrada,
+        time: horaEntrada || '08:00',
+        client: os.client.name,
+        vehicle: os.vehicle.model,
+        plate: os.vehicle.plate,
+        service: 'os',
+        serviceName: servicosNomes || 'Serviços da OS #' + os.osNumber,
+        responsible: os.services[0]?.responsible || '',
+        responsibleName: '',
+        status: 'agendado',
+        notes: 'OS #' + os.osNumber + ' - ' + (os.observations || ''),
+        osNumber: os.osNumber
+    };
+    
+    agendamentos.push(novoAgendamento);
+    localStorage.setItem('agendamentos', JSON.stringify(agendamentos));
+}
+
+function getNextOsNumber() {
+    const ordens = getOrdensServico();
+    if (ordens.length === 0) return 1025;
+    const maxNumber = Math.max(...ordens.map(os => os.osNumber || 0));
+    return maxNumber + 1;
+}
+
+let osCounter = getNextOsNumber();
+
+function getClientes() {
+    const clientes = localStorage.getItem('clientes');
+    return clientes ? JSON.parse(clientes) : [];
+}
+
+function getVeiculos() {
+    const data = localStorage.getItem('veiculos');
+    return data ? JSON.parse(data) : [];
+}
+
+function carregarClientes() {
+    const select = document.getElementById("clientSelect");
+    const clientes = getClientes();
+    
+    select.innerHTML = '<option value="">Selecione o cliente</option>';
+    
+    clientes.forEach(cliente => {
+        const option = document.createElement('option');
+        option.value = cliente.id;
+        option.textContent = `${cliente.nome} - ${cliente.telefone}`;
+        option.dataset.cliente = JSON.stringify(cliente);
+        select.appendChild(option);
+    });
+    
+    if (clientes.length === 0) {
+        const option = document.createElement('option');
+        option.value = "";
+        option.textContent = "Nenhum cliente cadastrado";
+        option.disabled = true;
+        select.appendChild(option);
+    }
+}
 
 function loadClientData() {
     const select = document.getElementById("clientSelect");
     const selectedOption = select.options[select.selectedIndex];
-
-    if (select.value === "1") {
-        document.getElementById("clientPhone").value = "(45) 99999-8888";
-        document.getElementById("clientCpf").value = "123.456.789-00";
-        document.getElementById("clientEmail").value = "joao.silva@email.com";
-    } else if (select.value === "2") {
-        document.getElementById("clientPhone").value = "(45) 99888-7777";
-        document.getElementById("clientCpf").value = "987.654.321-00";
-        document.getElementById("clientEmail").value = "maria.santos@email.com";
-    } else if (select.value === "3") {
-        document.getElementById("clientPhone").value = "(45) 99777-6666";
-        document.getElementById("clientCpf").value = "456.789.123-00";
-        document.getElementById("clientEmail").value = "pedro.costa@email.com";
+    
+    if (selectedOption && selectedOption.dataset.cliente) {
+        const cliente = JSON.parse(selectedOption.dataset.cliente);
+        
+        document.getElementById("clientPhone").value = cliente.telefone || "";
+        document.getElementById("clientCpf").value = cliente.documento || "";
+        document.getElementById("clientEmail").value = cliente.email || "";
+    } else {
+        document.getElementById("clientPhone").value = "";
+        document.getElementById("clientCpf").value = "";
+        document.getElementById("clientEmail").value = "";
     }
+}
+
+function buscarVeiculoPorPlaca() {
+    const placaInput = document.getElementById("vehiclePlate");
+    const placa = placaInput.value.toUpperCase();
+    
+    if (placa.length >= 7) {
+        const veiculos = getVeiculos();
+        const veiculo = veiculos.find(v => v.placa.toUpperCase() === placa);
+        
+        if (veiculo) {
+            document.getElementById("vehicleModel").value = veiculo.modelo || "";
+            document.getElementById("vehicleYear").value = veiculo.ano || "";
+            
+            const corSelect = document.getElementById("vehicleColor");
+            for (let i = 0; i < corSelect.options.length; i++) {
+                if (corSelect.options[i].value.toLowerCase() === (veiculo.cor || "").toLowerCase()) {
+                    corSelect.selectedIndex = i;
+                    break;
+                }
+            }
+            
+            document.getElementById("vehicleKm").value = veiculo.kilometragem || "";
+            
+            const fuelSelect = document.getElementById("vehicleFuel");
+            for (let i = 0; i < fuelSelect.options.length; i++) {
+                if (fuelSelect.options[i].value.toLowerCase() === (veiculo.combustivel || "").toLowerCase()) {
+                    fuelSelect.selectedIndex = i;
+                    break;
+                }
+            }
+            
+            mostrarMensagemVeiculoEncontrado(veiculo);
+        }
+    }
+}
+
+function mostrarMensagemVeiculoEncontrado(veiculo) {
+    let mensagem = document.getElementById("veiculoEncontradoMsg");
+    
+    if (!mensagem) {
+        mensagem = document.createElement("div");
+        mensagem.id = "veiculoEncontradoMsg";
+        mensagem.style.cssText = "background: #27ae60; color: white; padding: 10px 15px; border-radius: 8px; margin-top: 10px; font-size: 0.9em;";
+        
+        const vehicleCard = document.getElementById("vehiclePlate").closest(".card");
+        const formGrid = vehicleCard.querySelector(".form-grid");
+        formGrid.parentNode.insertBefore(mensagem, formGrid.nextSibling);
+    }
+    
+    mensagem.innerHTML = `✅ Veículo encontrado: ${veiculo.marca || ""} ${veiculo.modelo} - Proprietário: ${veiculo.nomeProprietario || "Não informado"}`;
+    
+    setTimeout(() => {
+        if (mensagem && mensagem.parentNode) {
+            mensagem.parentNode.removeChild(mensagem);
+        }
+    }, 5000);
 }
 
 function updateSummary() {
@@ -45,33 +183,6 @@ function selectPayment(element) {
     element.querySelector('input[type="radio"]').checked = true;
 }
 
-document.getElementById("vehiclePlate").addEventListener("input", function (e) {
-    let value = e.target.value.replace(/[^A-Za-z0-9]/g, "").toUpperCase();
-    if (value.length > 3) {
-        value = value.slice(0, 3) + "-" + value.slice(3, 7);
-    }
-    e.target.value = value;
-});
-
-document.getElementById("clientPhone").addEventListener("input", function (e) {
-    let value = e.target.value.replace(/\D/g, "");
-    if (value.length <= 11) {
-        value = value.replace(/(\d{2})(\d)/, "($1) $2");
-        value = value.replace(/(\d{5})(\d)/, "$1-$2");
-    }
-    e.target.value = value;
-});
-
-document.getElementById("clientCpf").addEventListener("input", function (e) {
-    let value = e.target.value.replace(/\D/g, "");
-    if (value.length <= 11) {
-        value = value.replace(/(\d{3})(\d)/, "$1.$2");
-        value = value.replace(/(\d{3})(\d)/, "$1.$2");
-        value = value.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
-    }
-    e.target.value = value;
-});
-
 function resetForm() {
     if (confirm("Deseja realmente limpar todos os campos?")) {
         document.getElementById("osForm").reset();
@@ -79,6 +190,7 @@ function resetForm() {
             opt.classList.remove("selected");
         });
         updateSummary();
+        carregarClientes();
     }
 }
 
@@ -88,95 +200,140 @@ function saveDraft() {
     );
 }
 
-document.getElementById("osForm").addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    const checkboxes = document.querySelectorAll(".service-check:checked");
-    if (checkboxes.length === 0) {
-        alert("Por favor, selecione pelo menos um serviço!");
-        return;
-    }
-
-    const paymentSelected = document.querySelector(
-        'input[name="payment"]:checked',
-    );
-    if (!paymentSelected) {
-        alert("Por favor, selecione uma forma de pagamento!");
-        return;
-    }
-
-    const formData = {
-        osNumber: osCounter,
-        client: {
-            name: document.getElementById("clientSelect").options[
-                document.getElementById("clientSelect").selectedIndex
-            ].text,
-            phone: document.getElementById("clientPhone").value,
-            cpf: document.getElementById("clientCpf").value,
-            email: document.getElementById("clientEmail").value,
-        },
-        vehicle: {
-            plate: document.getElementById("vehiclePlate").value,
-            model: document.getElementById("vehicleModel").value,
-            year: document.getElementById("vehicleYear").value,
-            color: document.getElementById("vehicleColor").value,
-            km: document.getElementById("vehicleKm").value,
-            fuel: document.getElementById("vehicleFuel").value,
-        },
-        dates: {
-            entry:
-                document.getElementById("dateEntry").value +
-                " " +
-                document.getElementById("timeEntry").value,
-            delivery:
-                document.getElementById("dateDelivery").value +
-                " " +
-                document.getElementById("timeDelivery").value,
-        },
-        services: [],
-        payment: paymentSelected.value,
-        observations: document.getElementById("observations").value,
-        total: document.getElementById("totalAmount").textContent,
-    };
-
-    checkboxes.forEach((checkbox) => {
-        const serviceItem = checkbox.closest(".service-item");
-        const serviceName =
-            serviceItem.querySelector(".service-name").textContent;
-        const responsible = serviceItem.querySelector(
-            ".responsible-select",
-        ).value;
-        formData.services.push({
-            name: serviceName,
-            price: checkbox.dataset.price,
-            time: checkbox.dataset.time,
-            responsible: responsible,
-        });
+document.addEventListener("DOMContentLoaded", function() {
+    carregarClientes();
+    
+    document.getElementById("vehiclePlate").addEventListener("input", function (e) {
+        let value = e.target.value.replace(/[^A-Za-z0-9]/g, "").toUpperCase();
+        if (value.length > 3) {
+            value = value.slice(0, 3) + "-" + value.slice(3, 7);
+        }
+        e.target.value = value;
+        
+        buscarVeiculoPorPlaca();
     });
 
-    console.log("Dados da OS:", formData);
+    document.getElementById("clientPhone").addEventListener("input", function (e) {
+        let value = e.target.value.replace(/\D/g, "");
+        if (value.length <= 11) {
+            value = value.replace(/(\d{2})(\d)/, "($1) $2");
+            value = value.replace(/(\d{5})(\d)/, "$1-$2");
+        }
+        e.target.value = value;
+    });
 
-    document.getElementById("successOsNumber").textContent = osCounter;
-    document.getElementById("successMessage").classList.add("show");
+    document.getElementById("clientCpf").addEventListener("input", function (e) {
+        let value = e.target.value.replace(/\D/g, "");
+        if (value.length <= 11) {
+            value = value.replace(/(\d{3})(\d)/, "$1.$2");
+            value = value.replace(/(\d{3})(\d)/, "$1.$2");
+            value = value.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+        }
+        e.target.value = value;
+    });
 
-    setTimeout(() => {
-        document.getElementById("successMessage").classList.remove("show");
-    }, 5000);
+    document.getElementById("osForm").addEventListener("submit", function (e) {
+        e.preventDefault();
 
-    resetForm();
+        const checkboxes = document.querySelectorAll(".service-check:checked");
+        if (checkboxes.length === 0) {
+            alert("Por favor, selecione pelo menos um serviço!");
+            return;
+        }
 
-    osCounter++;
-    document.getElementById("osNumber").textContent = "OS #" + osCounter;
+        const paymentSelected = document.querySelector(
+            'input[name="payment"]:checked',
+        );
+        if (!paymentSelected) {
+            alert("Por favor, selecione uma forma de pagamento!");
+            return;
+        }
 
-    window.scrollTo({ top: 0, behavior: "smooth" });
+        const formData = {
+            osNumber: osCounter,
+            client: {
+                name: document.getElementById("clientSelect").options[
+                    document.getElementById("clientSelect").selectedIndex
+                ].text,
+                phone: document.getElementById("clientPhone").value,
+                cpf: document.getElementById("clientCpf").value,
+                email: document.getElementById("clientEmail").value,
+            },
+            vehicle: {
+                plate: document.getElementById("vehiclePlate").value,
+                model: document.getElementById("vehicleModel").value,
+                year: document.getElementById("vehicleYear").value,
+                color: document.getElementById("vehicleColor").value,
+                km: document.getElementById("vehicleKm").value,
+                fuel: document.getElementById("vehicleFuel").value,
+            },
+            dates: {
+                entry:
+                    document.getElementById("dateEntry").value +
+                    " " +
+                    document.getElementById("timeEntry").value,
+                delivery:
+                    document.getElementById("dateDelivery").value +
+                    " " +
+                    document.getElementById("timeDelivery").value,
+            },
+            services: [],
+            payment: paymentSelected.value,
+            observations: document.getElementById("observations").value,
+            total: document.getElementById("totalAmount").textContent,
+        };
+
+        checkboxes.forEach((checkbox) => {
+            const serviceItem = checkbox.closest(".service-item");
+            const serviceName =
+                serviceItem.querySelector(".service-name").textContent;
+            const responsible = serviceItem.querySelector(
+                ".responsible-select",
+            ).value;
+            formData.services.push({
+                name: serviceName,
+                price: checkbox.dataset.price,
+                time: checkbox.dataset.time,
+                responsible: responsible,
+            });
+        });
+
+        formData.status = 'aguardando';
+        formData.progress = 0;
+        formData.timeline = [
+            { 
+                event: 'OS Criada', 
+                date: new Date().toLocaleString('pt-BR'), 
+                by: 'Sistema' 
+            }
+        ];
+
+        saveOrdemServico(formData);
+        criarAgendamentoParaOS(formData);
+        console.log("Dados da OS:", formData);
+
+        document.getElementById("successOsNumber").textContent = osCounter;
+        document.getElementById("successMessage").classList.add("show");
+
+        setTimeout(() => {
+            document.getElementById("successMessage").classList.remove("show");
+        }, 5000);
+
+        resetForm();
+
+        osCounter++;
+        document.getElementById("osNumber").textContent = "OS #" + osCounter;
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    const today = new Date();
+    document.getElementById("dateEntry").valueAsDate = today;
+    document.getElementById("timeEntry").value = new Date()
+        .toTimeString()
+        .slice(0, 5);
+
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    document.getElementById("dateDelivery").valueAsDate = tomorrow;
 });
-
-const today = new Date();
-document.getElementById("dateEntry").valueAsDate = today;
-document.getElementById("timeEntry").value = new Date()
-    .toTimeString()
-    .slice(0, 5);
-
-const tomorrow = new Date(today);
-tomorrow.setDate(tomorrow.getDate() + 1);
-document.getElementById("dateDelivery").valueAsDate = tomorrow;

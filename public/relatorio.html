@@ -442,8 +442,8 @@
                 </div>
             </div>
             <div class="filter-actions">
-                <button class="btn btn-secondary" onclick="alert('Filtros limpos!')">Limpar Filtros</button>
-                <button class="btn btn-primary" onclick="alert('Gerando relatório...')">Gerar Relatório</button>
+                <button class="btn btn-secondary" onclick="limparFiltros()">Limpar Filtros</button>
+                <button class="btn btn-primary" onclick="gerarRelatorio()">Gerar Relatório</button>
             </div>
         </div>
 
@@ -451,20 +451,20 @@
             <div class="report-card">
                 <h4>💰 Faturamento</h4>
                 <div class="stat-row">
-                    <span class="stat-label">Total do Mês</span>
-                    <span class="stat-value">R$ 45.850,00</span>
+                    <span class="stat-label">Total do Período</span>
+                    <span class="stat-value" id="faturamentoTotal">R$ 0,00</span>
                 </div>
                 <div class="stat-row">
                     <span class="stat-label">Média Diária</span>
-                    <span class="stat-value">R$ 1.528,33</span>
+                    <span class="stat-value" id="mediaDiaria">R$ 0,00</span>
                 </div>
                 <div class="stat-row">
                     <span class="stat-label">Meta do Mês</span>
-                    <span class="stat-value">R$ 50.000,00</span>
+                    <span class="stat-value" id="metaMes">R$ 50.000,00</span>
                 </div>
                 <div class="stat-row">
                     <span class="stat-label">% da Meta</span>
-                    <span class="stat-value">91.7%</span>
+                    <span class="stat-value" id="metaPercent">0%</span>
                 </div>
             </div>
 
@@ -472,39 +472,28 @@
                 <h4>🚗 Serviços Realizados</h4>
                 <div class="stat-row">
                     <span class="stat-label">Total de Serviços</span>
-                    <span class="stat-value">127</span>
+                    <span class="stat-value" id="totalServicos">0</span>
                 </div>
-                <div class="stat-row">
-                    <span class="stat-label">Polimento Técnico</span>
-                    <span class="stat-value">45</span>
-                </div>
-                <div class="stat-row">
-                    <span class="stat-label">Higienização</span>
-                    <span class="stat-value">52</span>
-                </div>
-                <div class="stat-row">
-                    <span class="stat-label">Vitrificação</span>
-                    <span class="stat-value">30</span>
-                </div>
+                <div id="servicosDetalhes"></div>
             </div>
 
             <div class="report-card">
                 <h4>👥 Desempenho da Equipe</h4>
                 <div class="stat-row">
                     <span class="stat-label">Funcionários Ativos</span>
-                    <span class="stat-value">8</span>
+                    <span class="stat-value" id="funcionariosAtivos">0</span>
                 </div>
                 <div class="stat-row">
                     <span class="stat-label">Média de Produtividade</span>
-                    <span class="stat-value">87%</span>
+                    <span class="stat-value" id="produtividade">0%</span>
                 </div>
                 <div class="stat-row">
                     <span class="stat-label">Horas Trabalhadas</span>
-                    <span class="stat-value">1.344h</span>
+                    <span class="stat-value" id="horasTrabalhadas">0h</span>
                 </div>
                 <div class="stat-row">
                     <span class="stat-label">Satisfação do Cliente</span>
-                    <span class="stat-value">4.8/5.0</span>
+                    <span class="stat-value" id="satisfacao">-</span>
                 </div>
             </div>
 
@@ -512,19 +501,19 @@
                 <h4>📦 Gestão de Estoque</h4>
                 <div class="stat-row">
                     <span class="stat-label">Itens em Estoque</span>
-                    <span class="stat-value">145</span>
+                    <span class="stat-value" id="itensEstoque">0</span>
                 </div>
                 <div class="stat-row">
                     <span class="stat-label">Itens em Falta</span>
-                    <span class="stat-value">3</span>
+                    <span class="stat-value" id="itensFalta">0</span>
                 </div>
                 <div class="stat-row">
                     <span class="stat-label">Itens Estoque Baixo</span>
-                    <span class="stat-value">12</span>
+                    <span class="stat-value" id="itensBaixos">0</span>
                 </div>
                 <div class="stat-row">
                     <span class="stat-label">Valor Total</span>
-                    <span class="stat-value">R$ 18.420,00</span>
+                    <span class="stat-value" id="valorEstoque">R$ 0,00</span>
                 </div>
             </div>
         </div>
@@ -552,97 +541,7 @@
                             <th>Status</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>1025</td>
-                            <td>05/12/2025</td>
-                            <td>João Silva</td>
-                            <td>Civic 2021</td>
-                            <td>Polimento Técnico</td>
-                            <td>R$ 450,00</td>
-                            <td><span class="status-badge status-andamento">Em Andamento</span></td>
-                        </tr>
-                        <tr>
-                            <td>1024</td>
-                            <td>05/12/2025</td>
-                            <td>Maria Santos</td>
-                            <td>Onix 2020</td>
-                            <td>Higienização Interna</td>
-                            <td>R$ 280,00</td>
-                            <td><span class="status-badge status-concluido">Concluído</span></td>
-                        </tr>
-                        <tr>
-                            <td>1023</td>
-                            <td>04/12/2025</td>
-                            <td>Pedro Costa</td>
-                            <td>Corolla 2022</td>
-                            <td>Vitrificação</td>
-                            <td>R$ 850,00</td>
-                            <td><span class="status-badge status-concluido">Concluído</span></td>
-                        </tr>
-                        <tr>
-                            <td>1022</td>
-                            <td>04/12/2025</td>
-                            <td>Ana Lima</td>
-                            <td>HR-V 2019</td>
-                            <td>Polimento Técnico</td>
-                            <td>R$ 420,00</td>
-                            <td><span class="status-badge status-concluido">Concluído</span></td>
-                        </tr>
-                        <tr>
-                            <td>1021</td>
-                            <td>03/12/2025</td>
-                            <td>Carlos Mendes</td>
-                            <td>Kicks 2021</td>
-                            <td>Higienização Interna</td>
-                            <td>R$ 300,00</td>
-                            <td><span class="status-badge status-concluido">Concluído</span></td>
-                        </tr>
-                        <tr>
-                            <td>1020</td>
-                            <td>03/12/2025</td>
-                            <td>Lucia Ferreira</td>
-                            <td>Compass 2020</td>
-                            <td>Vitrificação</td>
-                            <td>R$ 900,00</td>
-                            <td><span class="status-badge status-pendente">Pendente</span></td>
-                        </tr>
-                        <tr>
-                            <td>1019</td>
-                            <td>02/12/2025</td>
-                            <td>Roberto Alves</td>
-                            <td>Tucson 2021</td>
-                            <td>Polimento + Vitrificação</td>
-                            <td>R$ 1.200,00</td>
-                            <td><span class="status-badge status-concluido">Concluído</span></td>
-                        </tr>
-                        <tr>
-                            <td>1018</td>
-                            <td>02/12/2025</td>
-                            <td>Fernanda Rocha</td>
-                            <td>Argo 2019</td>
-                            <td>Higienização Completa</td>
-                            <td>R$ 380,00</td>
-                            <td><span class="status-badge status-concluido">Concluído</span></td>
-                        </tr>
-                        <tr>
-                            <td>1017</td>
-                            <td>01/12/2025</td>
-                            <td>Ricardo Souza</td>
-                            <td>Renegade 2020</td>
-                            <td>Polimento Técnico</td>
-                            <td>R$ 480,00</td>
-                            <td><span class="status-badge status-concluido">Concluído</span></td>
-                        </tr>
-                        <tr>
-                            <td>1016</td>
-                            <td>01/12/2025</td>
-                            <td>Juliana Martins</td>
-                            <td>Gol 2018</td>
-                            <td>Lavagem Completa</td>
-                            <td>R$ 180,00</td>
-                            <td><span class="status-badge status-concluido">Concluído</span></td>
-                        </tr>
+                    <tbody id="tabelaOS">
                     </tbody>
                 </table>
             </div>
@@ -662,55 +561,7 @@
                             <th>Avaliação Média</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>🥇 1º</td>
-                            <td>Carlos Eduardo</td>
-                            <td>28</td>
-                            <td>168h</td>
-                            <td>R$ 9.850,00</td>
-                            <td>4.9/5.0</td>
-                        </tr>
-                        <tr>
-                            <td>🥈 2º</td>
-                            <td>Rafael Santos</td>
-                            <td>25</td>
-                            <td>168h</td>
-                            <td>R$ 8.920,00</td>
-                            <td>4.8/5.0</td>
-                        </tr>
-                        <tr>
-                            <td>🥉 3º</td>
-                            <td>Bruno Costa</td>
-                            <td>22</td>
-                            <td>160h</td>
-                            <td>R$ 7.650,00</td>
-                            <td>4.7/5.0</td>
-                        </tr>
-                        <tr>
-                            <td>4º</td>
-                            <td>Marcos Silva</td>
-                            <td>19</td>
-                            <td>168h</td>
-                            <td>R$ 6.580,00</td>
-                            <td>4.6/5.0</td>
-                        </tr>
-                        <tr>
-                            <td>5º</td>
-                            <td>Lucas Ferreira</td>
-                            <td>17</td>
-                            <td>152h</td>
-                            <td>R$ 5.920,00</td>
-                            <td>4.8/5.0</td>
-                        </tr>
-                        <tr>
-                            <td>6º</td>
-                            <td>André Oliveira</td>
-                            <td>16</td>
-                            <td>168h</td>
-                            <td>R$ 5.430,00</td>
-                            <td>4.5/5.0</td>
-                        </tr>
+                    <tbody id="rankingFuncionarios">
                     </tbody>
                 </table>
             </div>
@@ -724,5 +575,6 @@
             </div>
         </div>
     </div>
+    <script src="relatorio.js"></script>
 </body>
 </html>

@@ -1,352 +1,284 @@
-let allOS = [
-            {
-                id: 1022,
-                client: 'João Silva',
-                phone: '(45) 99999-8888',
-                vehicle: 'Honda HR-V',
-                plate: 'ABC-1234',
-                year: 2019,
-                color: 'Prata',
-                dateEntry: '2025-12-05',
-                timeEntry: '08:30',
-                dateDelivery: '2025-12-05',
-                timeDelivery: '18:00',
-                status: 'em-andamento',
-                progress: 60,
-                services: ['Polimento Técnico', 'Higienização Interna', 'Vitrificação'],
-                total: 1750.00,
-                timeline: [
-                    { event: 'OS Criada', date: '05/12/2025 - 08:30', by: 'Recepção' },
-                    { event: 'Inspeção Inicial', date: '05/12/2025 - 09:00', by: 'Carlos Santos' },
-                    { event: 'Polimento Iniciado', date: '05/12/2025 - 09:30', by: 'Carlos Santos' }
-                ]
-            },
-            {
-                id: 1021,
-                client: 'Maria Santos',
-                phone: '(45) 99888-7777',
-                vehicle: 'Toyota Corolla',
-                plate: 'XYZ-5678',
-                year: 2020,
-                color: 'Preto',
-                dateEntry: '2025-12-04',
-                timeEntry: '10:00',
-                dateDelivery: '2025-12-04',
-                timeDelivery: '17:00',
-                status: 'concluido',
-                progress: 100,
-                services: ['Higienização Interna', 'Cristalização de Vidros'],
-                total: 430.00,
-                timeline: [
-                    { event: 'OS Criada', date: '04/12/2025 - 10:00', by: 'Recepção' },
-                    { event: 'Serviço Concluído', date: '04/12/2025 - 16:30', by: 'Maria Oliveira' },
-                    { event: 'Veículo Entregue', date: '04/12/2025 - 17:00', by: 'Recepção' }
-                ]
-            },
-            {
-                id: 1023,
-                client: 'Pedro Costa',
-                phone: '(45) 99777-6666',
-                vehicle: 'Volkswagen Gol',
-                plate: 'DEF-9999',
-                year: 2018,
-                color: 'Branco',
-                dateEntry: '2025-12-06',
-                timeEntry: '14:00',
-                dateDelivery: '2025-12-07',
-                timeDelivery: '12:00',
-                status: 'aguardando',
-                progress: 0,
-                services: ['Polimento Técnico', 'Limpeza de Motor'],
-                total: 570.00,
-                timeline: [
-                    { event: 'OS Criada', date: '06/12/2025 - 14:00', by: 'Recepção' }
-                ]
-            },
-            {
-                id: 1024,
-                client: 'Ana Paula',
-                phone: '(45) 99666-5555',
-                vehicle: 'Jeep Compass',
-                plate: 'GHI-3333',
-                year: 2021,
-                color: 'Azul',
-                dateEntry: '2025-12-06',
-                timeEntry: '09:00',
-                dateDelivery: '2025-12-06',
-                timeDelivery: '16:00',
-                status: 'em-andamento',
-                progress: 30,
-                services: ['Vitrificação', 'Hidratação de Couro'],
-                total: 980.00,
-                timeline: [
-                    { event: 'OS Criada', date: '06/12/2025 - 09:00', by: 'Recepção' },
-                    { event: 'Vitrificação Iniciada', date: '06/12/2025 - 09:30', by: 'Pedro Costa' }
-                ]
-            }
-        ];
+function getOrdensServico() {
+    const data = localStorage.getItem('ordensServico');
+    return data ? JSON.parse(data) : [];
+}
 
-        let currentOS = null;
+function saveOrdensServico(ordens) {
+    localStorage.setItem('ordensServico', JSON.stringify(ordens));
+}
 
-        function renderOSList() {
-            const container = document.getElementById('osList');
-            container.innerHTML = '';
+let allOS = [];
+let currentOS = null;
 
-            if (allOS.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">📋</div>
-                        <h3>Nenhuma OS encontrada</h3>
-                        <p>Não há ordens de serviço cadastradas no momento.</p>
-                    </div>
-                `;
-                return;
-            }
+function loadOS() {
+    allOS = getOrdensServico();
+    renderOSList();
+}
 
-            allOS.forEach(os => {
-                const statusText = {
-                    'aguardando': 'Aguardando',
-                    'em-andamento': 'Em Andamento',
-                    'concluido': 'Concluído',
-                    'cancelado': 'Cancelado'
-                };
+function renderOSList() {
+    const container = document.getElementById('osList');
+    container.innerHTML = '';
 
-                const card = document.createElement('div');
-                card.className = 'os-card';
-                card.innerHTML = `
-                    <div class="os-header">
-                        <div>
-                            <div class="os-number">OS #${os.id}</div>
-                            <div class="os-date">Entrada: ${os.dateEntry.split('-').reverse().join('/')} às ${os.timeEntry}</div>
-                        </div>
-                        <div class="os-status status-${os.status}">${statusText[os.status]}</div>
-                    </div>
+    if (allOS.length === 0) {
+        container.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-state-icon">📋</div>
+                <h3>Nenhuma OS encontrada</h3>
+                <p>Não há ordens de serviço cadastradas no momento.</p>
+                <a href="os.html" style="display: inline-block; margin-top: 15px; padding: 10px 20px; background: #27ae60; color: white; text-decoration: none; border-radius: 8px;">+ Criar Nova OS</a>
+            </div>
+        `;
+        updateStats();
+        return;
+    }
 
-                    <div class="os-content">
-                        <div class="os-info">
-                            <div class="info-label">Cliente</div>
-                            <div class="info-value">${os.client}</div>
-                        </div>
-                        <div class="os-info">
-                            <div class="info-label">Veículo</div>
-                            <div class="info-value">${os.vehicle}</div>
-                        </div>
-                        <div class="os-info">
-                            <div class="info-label">Placa</div>
-                            <div class="info-value">${os.plate}</div>
-                        </div>
-                        <div class="os-info">
-                            <div class="info-label">Previsão Entrega</div>
-                            <div class="info-value">${os.dateDelivery.split('-').reverse().join('/')} ${os.timeDelivery}</div>
-                        </div>
-                    </div>
+    allOS.forEach(os => {
+        const statusText = {
+            'aguardando': 'Aguardando',
+            'em-andamento': 'Em Andamento',
+            'concluido': 'Concluído',
+            'cancelado': 'Cancelado'
+        };
 
-                    ${os.status === 'em-andamento' ? `
-                        <div class="progress-container">
-                            <div class="progress-label">Progresso do Serviço:</div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: ${os.progress}%;">${os.progress}%</div>
-                            </div>
-                        </div>
-                    ` : ''}
+        const card = document.createElement('div');
+        card.className = 'os-card';
+        card.innerHTML = `
+            <div class="os-header">
+                <div>
+                    <div class="os-number">OS #${os.osNumber}</div>
+                    <div class="os-date">Entrada: ${formatDate(os.dates.entry)}</div>
+                </div>
+                <div class="os-status status-${os.status || 'aguardando'}">${statusText[os.status || 'aguardando']}</div>
+            </div>
 
-                    <div class="os-services">
-                        <div class="services-title">Serviços:</div>
-                        ${os.services.map(service => `<span class="service-tag">${service}</span>`).join('')}
-                    </div>
+            <div class="os-content">
+                <div class="os-info">
+                    <div class="info-label">Cliente</div>
+                    <div class="info-value">${os.client.name}</div>
+                </div>
+                <div class="os-info">
+                    <div class="info-label">Veículo</div>
+                    <div class="info-value">${os.vehicle.model}</div>
+                </div>
+                <div class="os-info">
+                    <div class="info-label">Placa</div>
+                    <div class="info-value">${os.vehicle.plate}</div>
+                </div>
+                <div class="os-info">
+                    <div class="info-label">Previsão Entrega</div>
+                    <div class="info-value">${formatDate(os.dates.delivery)}</div>
+                </div>
+            </div>
 
-                    <div class="os-footer">
-                        <div class="os-total">Total: R$ ${os.total.toFixed(2).replace('.', ',')}</div>
-                        <div class="os-actions">
-                            <button class="btn-action btn-view" onclick="viewOSDetail(${os.id})">Ver Detalhes</button>
-                            <button class="btn-action btn-edit" onclick="editOS(${os.id})">Editar</button>
-                            <button class="btn-action btn-delete" onclick="deleteOS(${os.id})">Excluir</button>
-                        </div>
-                    </div>
-                `;
-
-                container.appendChild(card);
-            });
-
-            updateStats();
-        }
-
-        function updateStats() {
-            document.getElementById('totalOS').textContent = allOS.length;
-            document.getElementById('inProgressOS').textContent = 
-                allOS.filter(os => os.status === 'em-andamento').length;
-            document.getElementById('completedTodayOS').textContent = 
-                allOS.filter(os => os.status === 'concluido' && os.dateEntry === '2025-12-06').length;
-            
-            const monthlyTotal = allOS
-                .filter(os => os.dateEntry.startsWith('2025-12'))
-                .reduce((sum, os) => sum + os.total, 0);
-            document.getElementById('monthlyRevenue').textContent = 
-                'R$ ' + monthlyTotal.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-        }
-
-        function viewOSDetail(id) {
-            const os = allOS.find(o => o.id === id);
-            if (!os) return;
-
-            currentOS = os;
-
-            document.getElementById('modalOsNumber').textContent = 'OS #' + os.id;
-            document.getElementById('detailModel').textContent = os.vehicle;
-            document.getElementById('detailPlate').textContent = os.plate;
-            document.getElementById('detailYear').textContent = os.year;
-            document.getElementById('detailColor').textContent = os.color;
-            document.getElementById('detailClient').textContent = os.client;
-            document.getElementById('detailPhone').textContent = os.phone;
-            document.getElementById('detailTotal').textContent = 
-                'R$ ' + os.total.toFixed(2).replace('.', ',');
-
-            const servicesDiv = document.getElementById('detailServices');
-            servicesDiv.innerHTML = os.services.map(service => 
-                `<span class="service-tag">${service}</span>`
-            ).join('');
-
-            const timelineDiv = document.getElementById('detailTimeline');
-            timelineDiv.innerHTML = os.timeline.map(item => `
-                <div class="timeline-item">
-                    <div class="timeline-dot">✓</div>
-                    <div class="timeline-content">
-                        <h4>${item.event}</h4>
-                        <p>${item.date} por ${item.by}</p>
+            ${os.status === 'em-andamento' ? `
+                <div class="progress-container">
+                    <div class="progress-label">Progresso do Serviço:</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${os.progress || 0}%;">${os.progress || 0}%</div>
                     </div>
                 </div>
-            `).join('');
+            ` : ''}
 
-            document.getElementById('detailModal').classList.add('active');
+            <div class="os-services">
+                <div class="services-title">Serviços:</div>
+                ${os.services.map(service => `<span class="service-tag">${service.name}</span>`).join('')}
+            </div>
+
+            <div class="os-footer">
+                <div class="os-total">Total: ${os.total}</div>
+                <div class="os-actions">
+                    <button class="btn-action btn-view" onclick="viewOSDetail(${os.osNumber})">Ver Detalhes</button>
+                    <button class="btn-action btn-status" onclick="changeStatus(${os.osNumber})">Alterar Status</button>
+                    <button class="btn-action btn-delete" onclick="deleteOS(${os.osNumber})">Excluir</button>
+                </div>
+            </div>
+        `;
+
+        container.appendChild(card);
+    });
+
+    updateStats();
+}
+
+function formatDate(dateStr) {
+    if (!dateStr) return '-';
+    const parts = dateStr.split(' ');
+    if (parts.length >= 1) {
+        const datePart = parts[0];
+        if (datePart.includes('-')) {
+            const [year, month, day] = datePart.split('-');
+            return `${day}/${month}/${year}${parts[1] ? ' ' + parts[1] : ''}`;
         }
+    }
+    return dateStr;
+}
 
-        function closeModal() {
-            document.getElementById('detailModal').classList.remove('active');
-            currentOS = null;
-        }
+function updateStats() {
+    document.getElementById('totalOS').textContent = allOS.length;
+    document.getElementById('inProgressOS').textContent = 
+        allOS.filter(os => os.status === 'em-andamento').length;
+    
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('completedTodayOS').textContent = 
+        allOS.filter(os => os.status === 'concluido' && os.dates.entry && os.dates.entry.startsWith(today)).length;
+    
+    const currentMonth = new Date().toISOString().slice(0, 7);
+    const monthlyTotal = allOS
+        .filter(os => os.dates.entry && os.dates.entry.startsWith(currentMonth.slice(0, 4)))
+        .reduce((sum, os) => {
+            const totalStr = os.total.replace('R$', '').replace('.', '').replace(',', '.').trim();
+            return sum + (parseFloat(totalStr) || 0);
+        }, 0);
+    document.getElementById('monthlyRevenue').textContent = 
+        'R$ ' + monthlyTotal.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+}
 
-        function editOS(id) {
-            alert('Redirecionando para edição da OS #' + id);
-        }
+function viewOSDetail(osNumber) {
+    const os = allOS.find(o => o.osNumber === osNumber);
+    if (!os) return;
 
-        function deleteOS(id) {
-            if (confirm('Deseja realmente excluir a OS #' + id + '?')) {
-                allOS = allOS.filter(os => os.id !== id);
-                renderOSList();
-                alert('OS #' + id + ' excluída com sucesso!');
-            }
-        }
+    currentOS = os;
 
-        function filterOS() {
-            const searchTerm = document.getElementById('searchOs').value.toLowerCase();
-            const statusFilter = document.getElementById('filterStatus').value;
-            const dateStart = document.getElementById('filterDateStart').value;
-            const dateEnd = document.getElementById('filterDateEnd').value;
+    document.getElementById('modalOsNumber').textContent = 'OS #' + os.osNumber;
+    document.getElementById('detailModel').textContent = os.vehicle.model || '-';
+    document.getElementById('detailPlate').textContent = os.vehicle.plate || '-';
+    document.getElementById('detailYear').textContent = os.vehicle.year || '-';
+    document.getElementById('detailColor').textContent = os.vehicle.color || '-';
+    document.getElementById('detailClient').textContent = os.client.name || '-';
+    document.getElementById('detailPhone').textContent = os.client.phone || '-';
+    document.getElementById('detailTotal').textContent = os.total || 'R$ 0,00';
 
-            let filtered = allOS.filter(os => {
-                const matchSearch = !searchTerm || 
-                    os.id.toString().includes(searchTerm) || 
-                    os.plate.toLowerCase().includes(searchTerm);
-                
-                const matchStatus = !statusFilter || os.status === statusFilter;
-                
-                const matchDateStart = !dateStart || os.dateEntry >= dateStart;
-                const matchDateEnd = !dateEnd || os.dateEntry <= dateEnd;
+    const servicesDiv = document.getElementById('detailServices');
+    servicesDiv.innerHTML = os.services.map(service => 
+        `<span class="service-tag">${service.name} - R$ ${parseFloat(service.price).toFixed(2).replace('.', ',')}</span>`
+    ).join('');
 
-                return matchSearch && matchStatus && matchDateStart && matchDateEnd;
-            });
+    const timelineDiv = document.getElementById('detailTimeline');
+    const timeline = os.timeline || [
+        { event: 'OS Criada', date: formatDate(os.dates.entry), by: 'Sistema' }
+    ];
+    timelineDiv.innerHTML = timeline.map(item => `
+        <div class="timeline-item">
+            <div class="timeline-dot">✓</div>
+            <div class="timeline-content">
+                <h4>${item.event}</h4>
+                <p>${item.date} por ${item.by}</p>
+            </div>
+        </div>
+    `).join('');
 
-            const container = document.getElementById('osList');
-            container.innerHTML = '';
+    document.getElementById('detailModal').classList.add('active');
+}
 
-            if (filtered.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">🔍</div>
-                        <h3>Nenhuma OS encontrada</h3>
-                        <p>Tente ajustar os filtros de busca.</p>
-                    </div>
-                `;
-                return;
-            }
+function closeModal() {
+    document.getElementById('detailModal').classList.remove('active');
+    currentOS = null;
+}
 
-            filtered.forEach(os => {
-                const statusText = {
-                    'aguardando': 'Aguardando',
-                    'em-andamento': 'Em Andamento',
-                    'concluido': 'Concluído',
-                    'cancelado': 'Cancelado'
-                };
-
-                const card = document.createElement('div');
-                card.className = 'os-card';
-                card.innerHTML = `
-                    <div class="os-header">
-                        <div>
-                            <div class="os-number">OS #${os.id}</div>
-                            <div class="os-date">Entrada: ${os.dateEntry.split('-').reverse().join('/')} às ${os.timeEntry}</div>
-                        </div>
-                        <div class="os-status status-${os.status}">${statusText[os.status]}</div>
-                    </div>
-
-                    <div class="os-content">
-                        <div class="os-info">
-                            <div class="info-label">Cliente</div>
-                            <div class="info-value">${os.client}</div>
-                        </div>
-                        <div class="os-info">
-                            <div class="info-label">Veículo</div>
-                            <div class="info-value">${os.vehicle}</div>
-                        </div>
-                        <div class="os-info">
-                            <div class="info-label">Placa</div>
-                            <div class="info-value">${os.plate}</div>
-                        </div>
-                        <div class="os-info">
-                            <div class="info-label">Previsão Entrega</div>
-                            <div class="info-value">${os.dateDelivery.split('-').reverse().join('/')} ${os.timeDelivery}</div>
-                        </div>
-                    </div>
-
-                    ${os.status === 'em-andamento' ? `
-                        <div class="progress-container">
-                            <div class="progress-label">Progresso do Serviço:</div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: ${os.progress}%;">${os.progress}%</div>
-                            </div>
-                        </div>
-                    ` : ''}
-
-                    <div class="os-services">
-                        <div class="services-title">Serviços:</div>
-                        ${os.services.map(service => `<span class="service-tag">${service}</span>`).join('')}
-                    </div>
-
-                    <div class="os-footer">
-                        <div class="os-total">Total: R$ ${os.total.toFixed(2).replace('.', ',')}</div>
-                        <div class="os-actions">
-                            <button class="btn-action btn-view" onclick="viewOSDetail(${os.id})">Ver Detalhes</button>
-                            <button class="btn-action btn-edit" onclick="editOS(${os.id})">Editar</button>
-                            <button class="btn-action btn-delete" onclick="deleteOS(${os.id})">Excluir</button>
-                        </div>
-                    </div>
-                `;
-
-                container.appendChild(card);
-            });
-        }
-
-        document.getElementById('searchOs').addEventListener('keyup', function(e) {
-            if (e.key === 'Enter') {
-                filterOS();
-            }
+function changeStatus(osNumber) {
+    const os = allOS.find(o => o.osNumber === osNumber);
+    if (!os) return;
+    
+    const statusOptions = ['aguardando', 'em-andamento', 'concluido', 'cancelado'];
+    const statusText = {
+        'aguardando': 'Aguardando',
+        'em-andamento': 'Em Andamento',
+        'concluido': 'Concluído',
+        'cancelado': 'Cancelado'
+    };
+    
+    const currentIndex = statusOptions.indexOf(os.status || 'aguardando');
+    const nextIndex = (currentIndex + 1) % statusOptions.length;
+    const newStatus = statusOptions[nextIndex];
+    
+    if (confirm(`Alterar status da OS #${osNumber} para "${statusText[newStatus]}"?`)) {
+        os.status = newStatus;
+        
+        if (!os.timeline) os.timeline = [];
+        os.timeline.push({
+            event: `Status alterado para ${statusText[newStatus]}`,
+            date: new Date().toLocaleString('pt-BR'),
+            by: 'Sistema'
         });
-
-        document.addEventListener('click', function(e) {
-            const modal = document.getElementById('detailModal');
-            if (e.target === modal) {
-                closeModal();
-            }
-        });
-
+        
+        if (newStatus === 'em-andamento') {
+            os.progress = os.progress || 10;
+        } else if (newStatus === 'concluido') {
+            os.progress = 100;
+        }
+        
+        saveOrdensServico(allOS);
         renderOSList();
+    }
+}
+
+function deleteOS(osNumber) {
+    if (confirm('Deseja realmente excluir a OS #' + osNumber + '?')) {
+        allOS = allOS.filter(os => os.osNumber !== osNumber);
+        saveOrdensServico(allOS);
+        renderOSList();
+        alert('OS #' + osNumber + ' excluída com sucesso!');
+    }
+}
+
+function filterOS() {
+    const searchTerm = document.getElementById('searchOs').value.toLowerCase();
+    const statusFilter = document.getElementById('filterStatus').value;
+    const dateStart = document.getElementById('filterDateStart').value;
+    const dateEnd = document.getElementById('filterDateEnd').value;
+
+    const allData = getOrdensServico();
+    
+    let filtered = allData.filter(os => {
+        const matchSearch = !searchTerm || 
+            os.osNumber.toString().includes(searchTerm) || 
+            (os.vehicle.plate && os.vehicle.plate.toLowerCase().includes(searchTerm)) ||
+            (os.client.name && os.client.name.toLowerCase().includes(searchTerm));
+        
+        const matchStatus = !statusFilter || (os.status || 'aguardando') === statusFilter;
+        
+        const osDate = os.dates.entry ? os.dates.entry.split(' ')[0] : '';
+        const matchDateStart = !dateStart || osDate >= dateStart;
+        const matchDateEnd = !dateEnd || osDate <= dateEnd;
+
+        return matchSearch && matchStatus && matchDateStart && matchDateEnd;
+    });
+
+    allOS = filtered;
+    renderOSList();
+    
+    if (filtered.length === 0 && (searchTerm || statusFilter || dateStart || dateEnd)) {
+        const container = document.getElementById('osList');
+        container.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-state-icon">🔍</div>
+                <h3>Nenhuma OS encontrada</h3>
+                <p>Tente ajustar os filtros de busca.</p>
+                <button onclick="clearFilters()" style="margin-top: 15px; padding: 10px 20px; background: #27ae60; color: white; border: none; border-radius: 8px; cursor: pointer;">Limpar Filtros</button>
+            </div>
+        `;
+    }
+}
+
+function clearFilters() {
+    document.getElementById('searchOs').value = '';
+    document.getElementById('filterStatus').value = '';
+    document.getElementById('filterDateStart').value = '';
+    document.getElementById('filterDateEnd').value = '';
+    loadOS();
+}
+
+document.getElementById('searchOs').addEventListener('keyup', function(e) {
+    if (e.key === 'Enter') {
+        filterOS();
+    }
+});
+
+document.addEventListener('click', function(e) {
+    const modal = document.getElementById('detailModal');
+    if (e.target === modal) {
+        closeModal();
+    }
+});
+
+loadOS();
