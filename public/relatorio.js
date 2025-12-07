@@ -1,31 +1,61 @@
-function getOrdensServico() {
-    const data = localStorage.getItem('ordensServico');
-    return data ? JSON.parse(data) : [];
+async function getOrdensServico() {
+    try {
+        const response = await fetch('/api/ordens');
+        return await response.json();
+    } catch (error) {
+        console.error('Erro ao carregar ordens:', error);
+        return [];
+    }
 }
 
-function getClientes() {
-    const data = localStorage.getItem('clientes');
-    return data ? JSON.parse(data) : [];
+async function getClientes() {
+    try {
+        const response = await fetch('/api/clientes');
+        return await response.json();
+    } catch (error) {
+        console.error('Erro ao carregar clientes:', error);
+        return [];
+    }
 }
 
-function getVeiculos() {
-    const data = localStorage.getItem('veiculos');
-    return data ? JSON.parse(data) : [];
+async function getVeiculos() {
+    try {
+        const response = await fetch('/api/veiculos');
+        return await response.json();
+    } catch (error) {
+        console.error('Erro ao carregar veículos:', error);
+        return [];
+    }
 }
 
-function getAgendamentos() {
-    const data = localStorage.getItem('agendamentos');
-    return data ? JSON.parse(data) : [];
+async function getAgendamentos() {
+    try {
+        const response = await fetch('/api/agendamentos');
+        return await response.json();
+    } catch (error) {
+        console.error('Erro ao carregar agendamentos:', error);
+        return [];
+    }
 }
 
-function getEstoque() {
-    const data = localStorage.getItem('estoque');
-    return data ? JSON.parse(data) : [];
+async function getEstoque() {
+    try {
+        const response = await fetch('/api/estoque');
+        return await response.json();
+    } catch (error) {
+        console.error('Erro ao carregar estoque:', error);
+        return [];
+    }
 }
 
-function getFuncionarios() {
-    const data = localStorage.getItem('funcionarios');
-    return data ? JSON.parse(data) : [];
+async function getFuncionarios() {
+    try {
+        const response = await fetch('/api/funcionarios');
+        return await response.json();
+    } catch (error) {
+        console.error('Erro ao carregar funcionários:', error);
+        return [];
+    }
 }
 
 function parseTotal(totalStr) {
@@ -94,13 +124,13 @@ function filterOSByDate(ordens, startDate, endDate) {
     });
 }
 
-function calcularEstatisticas() {
-    const ordens = getOrdensServico();
-    const clientes = getClientes();
-    const veiculos = getVeiculos();
-    const agendamentos = getAgendamentos();
-    const estoque = getEstoque();
-    const funcionarios = getFuncionarios();
+async function calcularEstatisticas() {
+    const ordens = await getOrdensServico();
+    const clientes = await getClientes();
+    const veiculos = await getVeiculos();
+    const agendamentos = await getAgendamentos();
+    const estoque = await getEstoque();
+    const funcionarios = await getFuncionarios();
     
     const { startDate, endDate } = getDateFilter();
     const ordensFiltradas = filterOSByDate(ordens, startDate, endDate);
@@ -151,10 +181,10 @@ function calcularEstatisticas() {
     document.getElementById('satisfacao').textContent = '4.8/5.0';
     
     document.getElementById('itensEstoque').textContent = estoque.length || '0';
-    const itensBaixos = estoque.filter(item => (item.quantidade || 0) < 10).length;
+    const itensBaixos = estoque.filter(item => (item.quantity || 0) < 10).length;
     document.getElementById('itensBaixos').textContent = itensBaixos;
-    document.getElementById('itensFalta').textContent = estoque.filter(item => (item.quantidade || 0) === 0).length;
-    const valorEstoque = estoque.reduce((sum, item) => sum + ((item.preco || 0) * (item.quantidade || 0)), 0);
+    document.getElementById('itensFalta').textContent = estoque.filter(item => (item.quantity || 0) === 0).length;
+    const valorEstoque = estoque.reduce((sum, item) => sum + ((item.price || 0) * (item.quantity || 0)), 0);
     document.getElementById('valorEstoque').textContent = formatCurrency(valorEstoque);
     
     renderTabelaOS(ordensFiltradas.slice(0, 10));
@@ -245,7 +275,7 @@ function renderRankingFuncionarios(ordens, funcionarios) {
         return;
     }
     
-    const medalhas = ['🥇 1º', '🥈 2º', '🥉 3º', '4º', '5º'];
+    const medalhas = ['1º', '2º', '3º', '4º', '5º'];
     
     rankingOrdenado.forEach((func, index) => {
         const horas = func.servicos * 2;

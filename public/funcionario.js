@@ -1,16 +1,16 @@
-function loadEmployees() {
-    const saved = localStorage.getItem('employeesData');
-    if (saved) {
-        return JSON.parse(saved);
+let employeesData = [];
+
+async function loadEmployees() {
+    try {
+        const response = await fetch('/api/funcionarios');
+        employeesData = await response.json();
+        renderEmployeesTable();
+    } catch (error) {
+        console.error('Erro ao carregar funcionários:', error);
+        employeesData = [];
+        renderEmployeesTable();
     }
-    return [];
 }
-
-function saveEmployees(data) {
-    localStorage.setItem('employeesData', JSON.stringify(data));
-}
-
-let employeesData = loadEmployees();
 
 function renderEmployeesTable() {
     const tbody = document.getElementById('employeesTableBody');
@@ -29,14 +29,14 @@ function renderEmployeesTable() {
             <td>${emp.departamento}</td>
             <td>${emp.turno}</td>
             <td>
-                <button class="action-btn" onclick="viewEmployee(${index})">Ver</button>
-                <button class="action-btn delete-btn" onclick="deleteEmployee(${index})">Excluir</button>
+                <button class="action-btn" onclick="viewEmployee('${emp.id}')">Ver</button>
+                <button class="action-btn delete-btn" onclick="deleteEmployee('${emp.id}')">Excluir</button>
             </td>
         </tr>
     `).join('');
 }
 
-function cadastrarFuncionario() {
+async function cadastrarFuncionario() {
     const nome = document.getElementById('nome').value;
     const cpf = document.getElementById('cpf').value;
     const dataNascimento = document.getElementById('dataNascimento').value;
@@ -111,26 +111,43 @@ function cadastrarFuncionario() {
         usuario,
         nivelAcesso,
         permissoes,
-        observacoes: document.getElementById('observacoes').value,
-        dataCadastro: new Date().toISOString()
+        observacoes: document.getElementById('observacoes').value
     };
 
-    employeesData.push(funcionario);
-    saveEmployees(employeesData);
-    renderEmployeesTable();
+    try {
+        const response = await fetch('/api/funcionarios', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(funcionario)
+        });
+        
+        if (response.ok) {
+            const savedFuncionario = await response.json();
+            employeesData.push(savedFuncionario);
+            renderEmployeesTable();
 
-    document.getElementById('mensagemSucesso').classList.add('show');
-    document.getElementById('formulario').style.display = 'none';
-    
-    setTimeout(() => {
-        limparFormulario();
-        document.getElementById('mensagemSucesso').classList.remove('show');
-        document.getElementById('formulario').style.display = 'grid';
-    }, 3000);
+            document.getElementById('mensagemSucesso').classList.add('show');
+            document.getElementById('formulario').style.display = 'none';
+            
+            setTimeout(() => {
+                limparFormulario();
+                document.getElementById('mensagemSucesso').classList.remove('show');
+                document.getElementById('formulario').style.display = 'grid';
+            }, 3000);
+        } else {
+            const error = await response.json();
+            alert('Erro ao cadastrar funcionário: ' + (error.error || 'Erro desconhecido'));
+        }
+    } catch (error) {
+        console.error('Erro:', error);
+        alert('Erro ao cadastrar funcionário');
+    }
 }
 
-function viewEmployee(index) {
-    const emp = employeesData[index];
+function viewEmployee(id) {
+    const emp = employeesData.find(e => e.id === id);
+    if (!emp) return;
+    
     const info = `
 DADOS DO FUNCIONÁRIO
 
@@ -149,7 +166,7 @@ Departamento: ${emp.departamento}
 Data de Admissão: ${emp.dataAdmissao}
 Supervisor: ${emp.supervisor || 'Não informado'}
 Turno: ${emp.turno}
-Especializações: ${emp.especializacoes.length > 0 ? emp.especializacoes.join(', ') : 'Nenhuma'}
+Especializações: ${emp.especializacoes && emp.especializacoes.length > 0 ? emp.especializacoes.join(', ') : 'Nenhuma'}
 
 REMUNERAÇÃO
 Salário: R$ ${emp.salario || '0,00'}
@@ -160,20 +177,32 @@ Meta de Faturamento: R$ ${emp.metaFaturamento || 'Não definida'}
 ACESSO AO SISTEMA
 Usuário: ${emp.usuario}
 Nível de Acesso: ${emp.nivelAcesso}
-Permissões: ${emp.permissoes.length > 0 ? emp.permissoes.join(', ') : 'Nenhuma'}
+Permissões: ${emp.permissoes && emp.permissoes.length > 0 ? emp.permissoes.join(', ') : 'Nenhuma'}
 
 Observações: ${emp.observacoes || 'Nenhuma'}
     `;
     alert(info);
 }
 
-function deleteEmployee(index) {
-    const emp = employeesData[index];
+async function deleteEmployee(id) {
+    const emp = employeesData.find(e => e.id === id);
+    if (!emp) return;
+    
     if (confirm(`Deseja realmente excluir o funcionário "${emp.nome}"?`)) {
-        employeesData.splice(index, 1);
-        saveEmployees(employeesData);
-        renderEmployeesTable();
-        alert('✅ Funcionário excluído com sucesso!');
+        try {
+            const response = await fetch(`/api/funcionarios/${id}`, { method: 'DELETE' });
+            
+            if (response.ok) {
+                employeesData = employeesData.filter(e => e.id !== id);
+                renderEmployeesTable();
+                alert('Funcionário excluído com sucesso!');
+            } else {
+                alert('Erro ao excluir funcionário');
+            }
+        } catch (error) {
+            console.error('Erro:', error);
+            alert('Erro ao excluir funcionário');
+        }
     }
 }
 
@@ -203,4 +232,4 @@ document.getElementById('telefone').addEventListener('input', function(e) {
     }
 });
 
-renderEmployeesTable();
+document.addEventListener('DOMContentLoaded', loadEmployees);

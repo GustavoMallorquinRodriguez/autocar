@@ -1,18 +1,16 @@
-function getOrdensServico() {
-    const data = localStorage.getItem('ordensServico');
-    return data ? JSON.parse(data) : [];
-}
-
-function saveOrdensServico(ordens) {
-    localStorage.setItem('ordensServico', JSON.stringify(ordens));
-}
-
 let allOS = [];
 let currentOS = null;
 
-function loadOS() {
-    allOS = getOrdensServico();
-    renderOSList();
+async function loadOS() {
+    try {
+        const response = await fetch('/api/ordens');
+        allOS = await response.json();
+        renderOSList();
+    } catch (error) {
+        console.error('Erro ao carregar OS:', error);
+        allOS = [];
+        renderOSList();
+    }
 }
 
 function renderOSList() {
@@ -175,7 +173,7 @@ function closeModal() {
     currentOS = null;
 }
 
-function changeStatus(osNumber) {
+async function changeStatus(osNumber) {
     const os = allOS.find(o => o.osNumber === osNumber);
     if (!os) return;
     
@@ -207,56 +205,79 @@ function changeStatus(osNumber) {
             os.progress = 100;
         }
         
-        saveOrdensServico(allOS);
-        renderOSList();
+        try {
+            await fetch(`/api/ordens/${osNumber}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(os)
+            });
+            renderOSList();
+        } catch (error) {
+            console.error('Erro ao atualizar OS:', error);
+            alert('Erro ao atualizar status');
+        }
     }
 }
 
-function deleteOS(osNumber) {
+async function deleteOS(osNumber) {
     if (confirm('Deseja realmente excluir a OS #' + osNumber + '?')) {
-        allOS = allOS.filter(os => os.osNumber !== osNumber);
-        saveOrdensServico(allOS);
-        renderOSList();
-        alert('OS #' + osNumber + ' excluída com sucesso!');
+        try {
+            const response = await fetch(`/api/ordens/${osNumber}`, { method: 'DELETE' });
+            if (response.ok) {
+                allOS = allOS.filter(os => os.osNumber !== osNumber);
+                renderOSList();
+                alert('OS #' + osNumber + ' excluída com sucesso!');
+            } else {
+                alert('Erro ao excluir OS');
+            }
+        } catch (error) {
+            console.error('Erro:', error);
+            alert('Erro ao excluir OS');
+        }
     }
 }
 
-function filterOS() {
+async function filterOS() {
     const searchTerm = document.getElementById('searchOs').value.toLowerCase();
     const statusFilter = document.getElementById('filterStatus').value;
     const dateStart = document.getElementById('filterDateStart').value;
     const dateEnd = document.getElementById('filterDateEnd').value;
 
-    const allData = getOrdensServico();
-    
-    let filtered = allData.filter(os => {
-        const matchSearch = !searchTerm || 
-            os.osNumber.toString().includes(searchTerm) || 
-            (os.vehicle.plate && os.vehicle.plate.toLowerCase().includes(searchTerm)) ||
-            (os.client.name && os.client.name.toLowerCase().includes(searchTerm));
+    try {
+        const response = await fetch('/api/ordens');
+        const allData = await response.json();
         
-        const matchStatus = !statusFilter || (os.status || 'aguardando') === statusFilter;
+        let filtered = allData.filter(os => {
+            const matchSearch = !searchTerm || 
+                os.osNumber.toString().includes(searchTerm) || 
+                (os.vehicle.plate && os.vehicle.plate.toLowerCase().includes(searchTerm)) ||
+                (os.client.name && os.client.name.toLowerCase().includes(searchTerm));
+            
+            const matchStatus = !statusFilter || (os.status || 'aguardando') === statusFilter;
+            
+            const osDate = os.dates.entry ? os.dates.entry.split(' ')[0] : '';
+            const matchDateStart = !dateStart || osDate >= dateStart;
+            const matchDateEnd = !dateEnd || osDate <= dateEnd;
+
+            return matchSearch && matchStatus && matchDateStart && matchDateEnd;
+        });
+
+        allOS = filtered;
+        renderOSList();
         
-        const osDate = os.dates.entry ? os.dates.entry.split(' ')[0] : '';
-        const matchDateStart = !dateStart || osDate >= dateStart;
-        const matchDateEnd = !dateEnd || osDate <= dateEnd;
-
-        return matchSearch && matchStatus && matchDateStart && matchDateEnd;
-    });
-
-    allOS = filtered;
-    renderOSList();
-    
-    if (filtered.length === 0 && (searchTerm || statusFilter || dateStart || dateEnd)) {
-        const container = document.getElementById('osList');
-        container.innerHTML = `
-            <div class="empty-state">
-                <div class="empty-state-icon">🔍</div>
-                <h3>Nenhuma OS encontrada</h3>
-                <p>Tente ajustar os filtros de busca.</p>
-                <button onclick="clearFilters()" style="margin-top: 15px; padding: 10px 20px; background: #27ae60; color: white; border: none; border-radius: 8px; cursor: pointer;">Limpar Filtros</button>
-            </div>
-        `;
+        if (filtered.length === 0 && (searchTerm || statusFilter || dateStart || dateEnd)) {
+            const container = document.getElementById('osList');
+            container.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-state-icon">🔍</div>
+                    <h3>Nenhuma OS encontrada</h3>
+                    <p>Tente ajustar os filtros de busca.</p>
+                    <button onclick="clearFilters()" style="margin-top: 15px; padding: 10px 20px; background: #27ae60; color: white; border: none; border-radius: 8px; cursor: pointer;">Limpar Filtros</button>
+                </div>
+            `;
+        }
+    } catch (error) {
+        console.error('Erro ao filtrar OS:', error);
     }
 }
 

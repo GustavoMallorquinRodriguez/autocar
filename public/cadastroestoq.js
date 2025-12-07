@@ -1,23 +1,16 @@
-const defaultData = [
-    { name: 'Flanela de Microfibra', category: 'Acessórios', quantity: 15, unit: 'un', minStock: 20, supplier: '', location: '', price: 0, notes: '' },
-    { name: 'Shampoo Automotivo', category: 'Limpeza', quantity: 8, unit: 'lt', minStock: 5, supplier: '', location: '', price: 0, notes: '' },
-    { name: 'Vitrificador Cerâmico', category: 'Vitrificação', quantity: 12, unit: 'un', minStock: 10, supplier: '', location: '', price: 0, notes: '' }
-];
+let stockData = [];
 
-function loadStockData() {
-    const saved = localStorage.getItem('stockData');
-    if (saved) {
-        return JSON.parse(saved);
+async function loadStockData() {
+    try {
+        const response = await fetch('/api/estoque');
+        stockData = await response.json();
+        renderTable();
+    } catch (error) {
+        console.error('Erro ao carregar estoque:', error);
+        stockData = [];
+        renderTable();
     }
-    localStorage.setItem('stockData', JSON.stringify(defaultData));
-    return defaultData;
 }
-
-function saveStockData(data) {
-    localStorage.setItem('stockData', JSON.stringify(data));
-}
-
-let stockData = loadStockData();
 
 function getCategoryName(value) {
     const categories = {
@@ -54,14 +47,14 @@ function renderTable() {
             <td>${item.quantity} ${item.unit}</td>
             <td>${getStatusBadge(item.quantity, item.minStock)}</td>
             <td>
-                <button class="action-btn" onclick="editItem(${index})">Editar</button>
-                <button class="action-btn delete-btn" onclick="deleteItem(${index})">Excluir</button>
+                <button class="action-btn" onclick="editItem('${item.id}')">Editar</button>
+                <button class="action-btn delete-btn" onclick="deleteItem('${item.id}')">Excluir</button>
             </td>
         </tr>
     `).join('');
 }
 
-document.getElementById('stockForm').addEventListener('submit', function(e) {
+document.getElementById('stockForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     
     const newItem = {
@@ -76,34 +69,78 @@ document.getElementById('stockForm').addEventListener('submit', function(e) {
         notes: document.getElementById('notes').value
     };
 
-    stockData.push(newItem);
-    saveStockData(stockData);
-    renderTable();
-    this.reset();
-    
-    alert('✅ Produto cadastrado com sucesso!');
+    try {
+        const response = await fetch('/api/estoque', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newItem)
+        });
+        
+        if (response.ok) {
+            const savedItem = await response.json();
+            stockData.push(savedItem);
+            renderTable();
+            this.reset();
+            alert('Produto cadastrado com sucesso!');
+        } else {
+            alert('Erro ao cadastrar produto');
+        }
+    } catch (error) {
+        console.error('Erro:', error);
+        alert('Erro ao cadastrar produto');
+    }
 });
 
-function editItem(index) {
-    const item = stockData[index];
+async function editItem(id) {
+    const item = stockData.find(i => i.id === id);
+    if (!item) return;
+    
     const newQuantity = prompt(`Editar quantidade de "${item.name}":`, item.quantity);
     
     if (newQuantity !== null && !isNaN(parseInt(newQuantity))) {
-        stockData[index].quantity = parseInt(newQuantity);
-        saveStockData(stockData);
-        renderTable();
-        alert('✅ Produto atualizado com sucesso!');
+        try {
+            const updatedItem = { ...item, quantity: parseInt(newQuantity) };
+            const response = await fetch(`/api/estoque/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(updatedItem)
+            });
+            
+            if (response.ok) {
+                const index = stockData.findIndex(i => i.id === id);
+                stockData[index].quantity = parseInt(newQuantity);
+                renderTable();
+                alert('Produto atualizado com sucesso!');
+            } else {
+                alert('Erro ao atualizar produto');
+            }
+        } catch (error) {
+            console.error('Erro:', error);
+            alert('Erro ao atualizar produto');
+        }
     }
 }
 
-function deleteItem(index) {
-    const item = stockData[index];
+async function deleteItem(id) {
+    const item = stockData.find(i => i.id === id);
+    if (!item) return;
+    
     if (confirm(`Deseja realmente excluir "${item.name}"?`)) {
-        stockData.splice(index, 1);
-        saveStockData(stockData);
-        renderTable();
-        alert('✅ Produto excluído com sucesso!');
+        try {
+            const response = await fetch(`/api/estoque/${id}`, { method: 'DELETE' });
+            
+            if (response.ok) {
+                stockData = stockData.filter(i => i.id !== id);
+                renderTable();
+                alert('Produto excluído com sucesso!');
+            } else {
+                alert('Erro ao excluir produto');
+            }
+        } catch (error) {
+            console.error('Erro:', error);
+            alert('Erro ao excluir produto');
+        }
     }
 }
 
-renderTable();
+document.addEventListener('DOMContentLoaded', loadStockData);

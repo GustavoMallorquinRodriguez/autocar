@@ -1,18 +1,17 @@
 let veiculos = [];
 
-function getVeiculos() {
-    const data = localStorage.getItem('veiculos');
-    return data ? JSON.parse(data) : [];
-}
-
-function salvarVeiculos(data) {
-    localStorage.setItem('veiculos', JSON.stringify(data));
-}
-
-function carregarVeiculos() {
-    veiculos = getVeiculos();
-    atualizarEstatisticas();
-    renderizarVeiculos(veiculos);
+async function carregarVeiculos() {
+    try {
+        const response = await fetch('/api/veiculos');
+        veiculos = await response.json();
+        atualizarEstatisticas();
+        renderizarVeiculos(veiculos);
+    } catch (error) {
+        console.error('Erro ao carregar veículos:', error);
+        veiculos = [];
+        atualizarEstatisticas();
+        renderizarVeiculos([]);
+    }
 }
 
 function atualizarEstatisticas() {
@@ -178,13 +177,22 @@ function fecharModal() {
     document.getElementById('vehicleModal').classList.remove('active');
 }
 
-function excluirVeiculo(id) {
+async function excluirVeiculo(id) {
     if (!confirm('Deseja realmente excluir este veículo?')) return;
     
-    veiculos = veiculos.filter(v => v.id !== id);
-    salvarVeiculos(veiculos);
-    atualizarEstatisticas();
-    renderizarVeiculos(veiculos);
+    try {
+        const response = await fetch(`/api/veiculos/${id}`, { method: 'DELETE' });
+        if (response.ok) {
+            veiculos = veiculos.filter(v => v.id !== id);
+            atualizarEstatisticas();
+            renderizarVeiculos(veiculos);
+        } else {
+            alert('Erro ao excluir veículo');
+        }
+    } catch (error) {
+        console.error('Erro:', error);
+        alert('Erro ao excluir veículo');
+    }
 }
 
 document.addEventListener('DOMContentLoaded', carregarVeiculos);

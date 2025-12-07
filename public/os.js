@@ -1,68 +1,28 @@
-function getOrdensServico() {
-    const data = localStorage.getItem('ordensServico');
-    return data ? JSON.parse(data) : [];
+let osCounter = 1025;
+
+async function getClientes() {
+    try {
+        const response = await fetch('/api/clientes');
+        return await response.json();
+    } catch (error) {
+        console.error('Erro ao carregar clientes:', error);
+        return [];
+    }
 }
 
-function saveOrdemServico(os) {
-    const ordens = getOrdensServico();
-    ordens.unshift(os);
-    localStorage.setItem('ordensServico', JSON.stringify(ordens));
+async function getVeiculos() {
+    try {
+        const response = await fetch('/api/veiculos');
+        return await response.json();
+    } catch (error) {
+        console.error('Erro ao carregar veículos:', error);
+        return [];
+    }
 }
 
-function getAgendamentos() {
-    const data = localStorage.getItem('agendamentos');
-    return data ? JSON.parse(data) : [];
-}
-
-function criarAgendamentoParaOS(os) {
-    const agendamentos = getAgendamentos();
-    
-    const [dataEntrada, horaEntrada] = os.dates.entry.split(' ');
-    
-    const servicosNomes = os.services.map(s => s.name).join(', ');
-    
-    const novoAgendamento = {
-        id: Date.now(),
-        date: dataEntrada,
-        time: horaEntrada || '08:00',
-        client: os.client.name,
-        vehicle: os.vehicle.model,
-        plate: os.vehicle.plate,
-        service: 'os',
-        serviceName: servicosNomes || 'Serviços da OS #' + os.osNumber,
-        responsible: os.services[0]?.responsible || '',
-        responsibleName: '',
-        status: 'agendado',
-        notes: 'OS #' + os.osNumber + ' - ' + (os.observations || ''),
-        osNumber: os.osNumber
-    };
-    
-    agendamentos.push(novoAgendamento);
-    localStorage.setItem('agendamentos', JSON.stringify(agendamentos));
-}
-
-function getNextOsNumber() {
-    const ordens = getOrdensServico();
-    if (ordens.length === 0) return 1025;
-    const maxNumber = Math.max(...ordens.map(os => os.osNumber || 0));
-    return maxNumber + 1;
-}
-
-let osCounter = getNextOsNumber();
-
-function getClientes() {
-    const clientes = localStorage.getItem('clientes');
-    return clientes ? JSON.parse(clientes) : [];
-}
-
-function getVeiculos() {
-    const data = localStorage.getItem('veiculos');
-    return data ? JSON.parse(data) : [];
-}
-
-function carregarClientes() {
+async function carregarClientes() {
     const select = document.getElementById("clientSelect");
-    const clientes = getClientes();
+    const clientes = await getClientes();
     
     select.innerHTML = '<option value="">Selecione o cliente</option>';
     
@@ -100,12 +60,12 @@ function loadClientData() {
     }
 }
 
-function buscarVeiculoPorPlaca() {
+async function buscarVeiculoPorPlaca() {
     const placaInput = document.getElementById("vehiclePlate");
     const placa = placaInput.value.toUpperCase();
     
     if (placa.length >= 7) {
-        const veiculos = getVeiculos();
+        const veiculos = await getVeiculos();
         const veiculo = veiculos.find(v => v.placa.toUpperCase() === placa);
         
         if (veiculo) {
@@ -148,7 +108,7 @@ function mostrarMensagemVeiculoEncontrado(veiculo) {
         formGrid.parentNode.insertBefore(mensagem, formGrid.nextSibling);
     }
     
-    mensagem.innerHTML = `✅ Veículo encontrado: ${veiculo.marca || ""} ${veiculo.modelo} - Proprietário: ${veiculo.nomeProprietario || "Não informado"}`;
+    mensagem.innerHTML = `Veículo encontrado: ${veiculo.marca || ""} ${veiculo.modelo} - Proprietário: ${veiculo.nomeProprietario || "Não informado"}`;
     
     setTimeout(() => {
         if (mensagem && mensagem.parentNode) {
@@ -200,6 +160,36 @@ function saveDraft() {
     );
 }
 
+async function criarAgendamentoParaOS(os) {
+    const [dataEntrada, horaEntrada] = os.dates.entry.split(' ');
+    const servicosNomes = os.services.map(s => s.name).join(', ');
+    
+    const novoAgendamento = {
+        date: dataEntrada,
+        time: horaEntrada || '08:00',
+        client: os.client.name,
+        vehicle: os.vehicle.model,
+        plate: os.vehicle.plate,
+        service: 'os',
+        serviceName: servicosNomes || 'Serviços da OS #' + os.osNumber,
+        responsible: os.services[0]?.responsible || '',
+        responsibleName: '',
+        status: 'agendado',
+        notes: 'OS #' + os.osNumber + ' - ' + (os.observations || ''),
+        osNumber: os.osNumber
+    };
+    
+    try {
+        await fetch('/api/agendamentos', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(novoAgendamento)
+        });
+    } catch (error) {
+        console.error('Erro ao criar agendamento:', error);
+    }
+}
+
 document.addEventListener("DOMContentLoaded", function() {
     carregarClientes();
     
@@ -232,7 +222,7 @@ document.addEventListener("DOMContentLoaded", function() {
         e.target.value = value;
     });
 
-    document.getElementById("osForm").addEventListener("submit", function (e) {
+    document.getElementById("osForm").addEventListener("submit", async function (e) {
         e.preventDefault();
 
         const checkboxes = document.querySelectorAll(".service-check:checked");
@@ -250,7 +240,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         const formData = {
-            osNumber: osCounter,
             client: {
                 name: document.getElementById("clientSelect").options[
                     document.getElementById("clientSelect").selectedIndex
@@ -281,6 +270,8 @@ document.addEventListener("DOMContentLoaded", function() {
             payment: paymentSelected.value,
             observations: document.getElementById("observations").value,
             total: document.getElementById("totalAmount").textContent,
+            status: 'aguardando',
+            progress: 0
         };
 
         checkboxes.forEach((checkbox) => {
@@ -298,33 +289,37 @@ document.addEventListener("DOMContentLoaded", function() {
             });
         });
 
-        formData.status = 'aguardando';
-        formData.progress = 0;
-        formData.timeline = [
-            { 
-                event: 'OS Criada', 
-                date: new Date().toLocaleString('pt-BR'), 
-                by: 'Sistema' 
+        try {
+            const response = await fetch('/api/ordens', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+            
+            if (response.ok) {
+                const savedOS = await response.json();
+                osCounter = savedOS.osNumber;
+                
+                await criarAgendamentoParaOS(savedOS);
+                
+                document.getElementById("successOsNumber").textContent = osCounter;
+                document.getElementById("successMessage").classList.add("show");
+
+                setTimeout(() => {
+                    document.getElementById("successMessage").classList.remove("show");
+                }, 5000);
+
+                resetForm();
+                osCounter++;
+                document.getElementById("osNumber").textContent = "OS #" + osCounter;
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            } else {
+                alert('Erro ao criar OS');
             }
-        ];
-
-        saveOrdemServico(formData);
-        criarAgendamentoParaOS(formData);
-        console.log("Dados da OS:", formData);
-
-        document.getElementById("successOsNumber").textContent = osCounter;
-        document.getElementById("successMessage").classList.add("show");
-
-        setTimeout(() => {
-            document.getElementById("successMessage").classList.remove("show");
-        }, 5000);
-
-        resetForm();
-
-        osCounter++;
-        document.getElementById("osNumber").textContent = "OS #" + osCounter;
-
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        } catch (error) {
+            console.error('Erro:', error);
+            alert('Erro ao criar OS');
+        }
     });
 
     const today = new Date();

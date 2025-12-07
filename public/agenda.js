@@ -18,63 +18,15 @@ const responsibleMap = {
     'pedro': 'Pedro Costa'
 };
 
-function getEvents() {
-    const data = localStorage.getItem('agendamentos');
-    return data ? JSON.parse(data) : [];
-}
-
-function saveEvents() {
-    localStorage.setItem('agendamentos', JSON.stringify(events));
-}
-
-function loadEvents() {
-    events = getEvents();
-    if (events.length === 0) {
-        events = [
-            {
-                id: 1,
-                date: getTodayString(),
-                time: '10:00',
-                client: 'Carlos Santos',
-                vehicle: 'Corolla 2020',
-                plate: 'ABC-1234',
-                service: 'polimento',
-                serviceName: 'Polimento Técnico',
-                responsible: 'joao',
-                responsibleName: 'João Silva',
-                status: 'agendado',
-                notes: 'Cliente solicitou atenção especial no capô'
-            },
-            {
-                id: 2,
-                date: getTodayString(),
-                time: '14:00',
-                client: 'Ana Paula',
-                vehicle: 'HR-V 2019',
-                plate: 'XYZ-9876',
-                service: 'higienizacao',
-                serviceName: 'Higienização Interna',
-                responsible: 'maria',
-                responsibleName: 'Maria Santos',
-                status: 'em-andamento',
-                notes: ''
-            },
-            {
-                id: 3,
-                date: getTomorrowString(),
-                time: '09:00',
-                client: 'Roberto Lima',
-                vehicle: 'Civic 2021',
-                plate: 'DEF-5555',
-                service: 'vitrificacao',
-                serviceName: 'Vitrificação',
-                responsible: 'pedro',
-                responsibleName: 'Pedro Costa',
-                status: 'agendado',
-                notes: 'Primeira vitrificação do veículo'
-            }
-        ];
-        saveEvents();
+async function loadEvents() {
+    try {
+        const response = await fetch('/api/agendamentos');
+        events = await response.json();
+        renderCalendar();
+    } catch (error) {
+        console.error('Erro ao carregar agendamentos:', error);
+        events = [];
+        renderCalendar();
     }
 }
 
@@ -269,7 +221,7 @@ function goToToday() {
 
 function openModal(date = '') {
     editingEventId = null;
-    document.getElementById('modalTitle').textContent = '📅 Novo Agendamento';
+    document.getElementById('modalTitle').textContent = 'Novo Agendamento';
     const modal = document.getElementById('eventModal');
     modal.classList.add('active');
     
@@ -294,7 +246,7 @@ function editEvent(id) {
     if (!event) return;
 
     editingEventId = id;
-    document.getElementById('modalTitle').textContent = '📅 Editar Agendamento';
+    document.getElementById('modalTitle').textContent = 'Editar Agendamento';
 
     document.getElementById('eventDate').value = event.date;
     document.getElementById('eventTime').value = event.time;
@@ -310,25 +262,43 @@ function editEvent(id) {
     modal.classList.add('active');
 }
 
-function deleteEvent(id) {
+async function deleteEvent(id) {
     if (confirm('Deseja realmente excluir este agendamento?')) {
-        events = events.filter(e => e.id !== id);
-        saveEvents();
-        renderCalendar();
-        if (currentView === 'list') {
-            renderListView();
+        try {
+            const response = await fetch(`/api/agendamentos/${id}`, { method: 'DELETE' });
+            if (response.ok) {
+                events = events.filter(e => e.id !== id);
+                renderCalendar();
+                if (currentView === 'list') {
+                    renderListView();
+                }
+            } else {
+                alert('Erro ao excluir agendamento');
+            }
+        } catch (error) {
+            console.error('Erro:', error);
+            alert('Erro ao excluir agendamento');
         }
     }
 }
 
-function completeEvent(id) {
+async function completeEvent(id) {
     const event = events.find(e => e.id === id);
     if (event) {
         event.status = 'concluido';
-        saveEvents();
-        renderCalendar();
-        if (currentView === 'list') {
-            renderListView();
+        try {
+            await fetch(`/api/agendamentos/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(event)
+            });
+            renderCalendar();
+            if (currentView === 'list') {
+                renderListView();
+            }
+        } catch (error) {
+            console.error('Erro:', error);
+            alert('Erro ao concluir agendamento');
         }
     }
 }
@@ -340,7 +310,7 @@ function filterEvents() {
     }
 }
 
-function handleFormSubmit(e) {
+async function handleFormSubmit(e) {
     e.preventDefault();
     
     const eventData = {
@@ -357,23 +327,45 @@ function handleFormSubmit(e) {
         notes: document.getElementById('eventNotes').value
     };
 
-    if (editingEventId) {
-        const index = events.findIndex(e => e.id === editingEventId);
-        if (index !== -1) {
-            events[index] = { ...events[index], ...eventData };
+    try {
+        if (editingEventId) {
+            const response = await fetch(`/api/agendamentos/${editingEventId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(eventData)
+            });
+            if (response.ok) {
+                const index = events.findIndex(e => e.id === editingEventId);
+                if (index !== -1) {
+                    events[index] = { ...events[index], ...eventData };
+                }
+                alert('Agendamento atualizado com sucesso!');
+            } else {
+                alert('Erro ao atualizar agendamento');
+            }
+        } else {
+            const response = await fetch('/api/agendamentos', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(eventData)
+            });
+            if (response.ok) {
+                const savedEvent = await response.json();
+                events.push(savedEvent);
+                alert('Agendamento criado com sucesso!');
+            } else {
+                alert('Erro ao criar agendamento');
+            }
         }
-        alert('✅ Agendamento atualizado com sucesso!');
-    } else {
-        const newId = events.length > 0 ? Math.max(...events.map(e => e.id)) + 1 : 1;
-        events.push({ id: newId, ...eventData });
-        alert('✅ Agendamento criado com sucesso!');
-    }
 
-    saveEvents();
-    closeModal();
-    renderCalendar();
-    if (currentView === 'list') {
-        renderListView();
+        closeModal();
+        renderCalendar();
+        if (currentView === 'list') {
+            renderListView();
+        }
+    } catch (error) {
+        console.error('Erro:', error);
+        alert('Erro ao salvar agendamento');
     }
 }
 
@@ -387,7 +379,6 @@ function formatPlate(input) {
 
 document.addEventListener('DOMContentLoaded', function() {
     loadEvents();
-    renderCalendar();
     
     document.getElementById('eventForm').addEventListener('submit', handleFormSubmit);
     document.getElementById('eventPlate').addEventListener('input', function(e) {

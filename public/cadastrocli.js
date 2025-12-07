@@ -40,24 +40,10 @@ function buscarCep() {
     }
 }
 
-function getClientes() {
-    const clientes = localStorage.getItem('clientes');
-    return clientes ? JSON.parse(clientes) : [];
-}
-
-function salvarClientes(clientes) {
-    localStorage.setItem('clientes', JSON.stringify(clientes));
-}
-
-function gerarId() {
-    return Date.now().toString(36) + Math.random().toString(36).substr(2);
-}
-
-function cadastrarCliente(event) {
+async function cadastrarCliente(event) {
     event.preventDefault();
     
     const cliente = {
-        id: gerarId(),
         tipoPessoa: document.querySelector('input[name="tipoPessoa"]:checked').value,
         nome: document.getElementById('nome').value,
         documento: document.getElementById('documento').value,
@@ -74,21 +60,31 @@ function cadastrarCliente(event) {
         bairro: document.getElementById('bairro').value,
         cidade: document.getElementById('cidade').value,
         estado: document.getElementById('estado').value,
-        observacoes: document.getElementById('observacoes').value,
-        dataCadastro: new Date().toISOString()
+        observacoes: document.getElementById('observacoes').value
     };
 
-    const clientes = getClientes();
-    clientes.push(cliente);
-    salvarClientes(clientes);
-    
-    const successMessage = document.getElementById('successMessage');
-    successMessage.classList.add('show');
-    
-    setTimeout(() => {
-        successMessage.classList.remove('show');
-        limparFormulario();
-    }, 3000);
+    try {
+        const response = await fetch('/api/clientes', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(cliente)
+        });
+        
+        if (response.ok) {
+            const successMessage = document.getElementById('successMessage');
+            successMessage.classList.add('show');
+            
+            setTimeout(() => {
+                successMessage.classList.remove('show');
+                limparFormulario();
+            }, 3000);
+        } else {
+            alert('Erro ao cadastrar cliente');
+        }
+    } catch (error) {
+        console.error('Erro:', error);
+        alert('Erro ao cadastrar cliente');
+    }
 }
 
 function limparFormulario() {

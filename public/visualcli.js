@@ -1,18 +1,17 @@
 let clientes = [];
 
-function getClientes() {
-    const data = localStorage.getItem('clientes');
-    return data ? JSON.parse(data) : [];
-}
-
-function salvarClientes(data) {
-    localStorage.setItem('clientes', JSON.stringify(data));
-}
-
-function carregarClientes() {
-    clientes = getClientes();
-    atualizarEstatisticas();
-    renderizarClientes(clientes);
+async function carregarClientes() {
+    try {
+        const response = await fetch('/api/clientes');
+        clientes = await response.json();
+        atualizarEstatisticas();
+        renderizarClientes(clientes);
+    } catch (error) {
+        console.error('Erro ao carregar clientes:', error);
+        clientes = [];
+        atualizarEstatisticas();
+        renderizarClientes([]);
+    }
 }
 
 function atualizarEstatisticas() {
@@ -193,13 +192,22 @@ function fecharModal() {
     document.getElementById('clientModal').classList.remove('active');
 }
 
-function excluirCliente(id) {
+async function excluirCliente(id) {
     if (!confirm('Deseja realmente excluir este cliente?')) return;
     
-    clientes = clientes.filter(c => c.id !== id);
-    salvarClientes(clientes);
-    atualizarEstatisticas();
-    renderizarClientes(clientes);
+    try {
+        const response = await fetch(`/api/clientes/${id}`, { method: 'DELETE' });
+        if (response.ok) {
+            clientes = clientes.filter(c => c.id !== id);
+            atualizarEstatisticas();
+            renderizarClientes(clientes);
+        } else {
+            alert('Erro ao excluir cliente');
+        }
+    } catch (error) {
+        console.error('Erro:', error);
+        alert('Erro ao excluir cliente');
+    }
 }
 
 document.addEventListener('DOMContentLoaded', carregarClientes);

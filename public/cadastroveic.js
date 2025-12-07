@@ -1,16 +1,3 @@
-function getVeiculos() {
-    const data = localStorage.getItem('veiculos');
-    return data ? JSON.parse(data) : [];
-}
-
-function salvarVeiculos(veiculos) {
-    localStorage.setItem('veiculos', JSON.stringify(veiculos));
-}
-
-function gerarId() {
-    return Date.now().toString(36) + Math.random().toString(36).substr(2);
-}
-
 function formatarPlaca(input) {
     let value = input.value.replace(/[^A-Za-z0-9]/g, '').toUpperCase();
     if (value.length > 3) {
@@ -38,11 +25,10 @@ function formatarTelefone(input) {
     input.value = value;
 }
 
-function cadastrarVeiculo(event) {
+async function cadastrarVeiculo(event) {
     event.preventDefault();
     
     const veiculo = {
-        id: gerarId(),
         placa: document.getElementById('placa').value,
         marca: document.getElementById('marca').value,
         modelo: document.getElementById('modelo').value,
@@ -55,23 +41,33 @@ function cadastrarVeiculo(event) {
         emailProprietario: document.getElementById('emailProprietario').value,
         kilometragem: document.getElementById('kilometragem').value,
         combustivel: document.getElementById('combustivel').value,
-        observacoes: document.getElementById('observacoes').value,
-        dataCadastro: new Date().toISOString()
+        observacoes: document.getElementById('observacoes').value
     };
 
-    const veiculos = getVeiculos();
-    veiculos.push(veiculo);
-    salvarVeiculos(veiculos);
-    
-    const successMessage = document.getElementById('successMessage');
-    successMessage.classList.add('show');
-    
-    setTimeout(() => {
-        successMessage.classList.remove('show');
-        document.getElementById('vehicleForm').reset();
-    }, 3000);
+    try {
+        const response = await fetch('/api/veiculos', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(veiculo)
+        });
+        
+        if (response.ok) {
+            const successMessage = document.getElementById('successMessage');
+            successMessage.classList.add('show');
+            
+            setTimeout(() => {
+                successMessage.classList.remove('show');
+                document.getElementById('vehicleForm').reset();
+            }, 3000);
 
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+            alert('Erro ao cadastrar veículo');
+        }
+    } catch (error) {
+        console.error('Erro:', error);
+        alert('Erro ao cadastrar veículo');
+    }
 }
 
 document.addEventListener('DOMContentLoaded', function() {
